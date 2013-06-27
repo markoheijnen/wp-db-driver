@@ -35,6 +35,40 @@ class WP_DB_Driver_Plugin {
 		screen_icon('options-general');
 		echo '<h2>' . esc_html( get_admin_page_title() ) . '</h2>';
 
+		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'install-db-nonce' ) ) {
+
+			if ( copy( dirname( __FILE__ ) . '/wp-content/db.php', WP_CONTENT_DIR . '/db.php' ) )
+				echo '<div class="updated"><p><strong>' . __( 'db.php has been installed.', 'wp-db-driver' ) .'</strong></p></div>';
+			else
+				echo '<div class="error"><p><strong>' . __( "db.php couldn't be installed. Please try is manually", 'wp-db-driver' ) .'</strong></p></div>';
+
+		}
+
+
+		echo '<div class="tool-box"><h3 class="title">' . __( 'Current driver', 'wp-db-driver' ) . '</h3></div>';
+
+		if( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+			$crc1 = md5_file( dirname( __FILE__ ) . '/wp-content/db.php' );
+			$crc2 = md5_file( WP_CONTENT_DIR . '/db.php' );
+
+			if ( $crc1 === $crc2 )
+				echo '<p><strong>' . $this->get_current_driver() . '</strong></p>';
+			else
+				echo '<p><strong>' . __( 'Another db.php is installed', 'wp-db-driver' ) . '</strong></p>';
+		}
+		else {
+			echo '<form method="post" style="display: inline;">';
+			wp_nonce_field('install-db-nonce');
+
+			echo '<p><strong>' . __( 'No custom db.php installed', 'wp-db-driver' ) . '</strong> ';
+			submit_button( __( 'Install', 'wp-db-driver' ), 'primary', 'install-db-php', false );
+			echo '</p>';
+
+			echo '</form>';
+		}
+
+
+
 		$loaded_pdo = $loaded_mysqli = $loaded_mysql = __( 'Not installed', 'wp-db-driver' );
 
 		if( extension_loaded( 'pdo_mysql' ) )
