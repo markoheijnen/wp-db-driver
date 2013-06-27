@@ -17,8 +17,8 @@ class WP_DB_Driver_Plugin {
 
 	public function add_page() {
 		add_management_page(
-			__( 'WP DB Driver', 'menu-test' ),
-			__( 'WP DB Driver', 'menu-test' ),
+			__( 'WP DB Driver', 'wp-db-driver' ),
+			__( 'WP DB Driver', 'wp-db-driver' ),
 			'manage_options',
 			'wp-db-driver',
 			array( $this, 'page_overview' )
