@@ -70,7 +70,7 @@ class wpdb_drivers extends wpdb {
 	function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
 		$this->set_driver();
 
-		parent::__construct();
+		parent::__construct( $dbuser, $dbpassword, $dbname, $dbhost );
 	}
 
 	/**
