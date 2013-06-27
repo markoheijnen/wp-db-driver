@@ -35,38 +35,38 @@ class WP_DB_Driver_Plugin {
 		screen_icon('options-general');
 		echo '<h2>' . esc_html( get_admin_page_title() ) . '</h2>';
 
-		$loaded_pdo = $loaded_mysqli = $loaded_mysql = __( 'No' );
+		$loaded_pdo = $loaded_mysqli = $loaded_mysql = __( 'Not installed', 'wp-db-driver' );
 
 		if( extension_loaded( 'pdo_mysql' ) )
-			$loaded_pdo = __( 'Yes' );
+			$loaded_pdo = __( 'Installed', 'wp-db-driver' );
 
 		if( extension_loaded( 'mysqli' ) )
-			$loaded_mysqli = __( 'Yes' );
+			$loaded_mysqli = __( 'Installed', 'wp-db-driver' );
 
 		if( extension_loaded( 'mysql' ) )
-			$loaded_mysql = __( 'Yes' );
+			$loaded_mysql = __( 'Installed', 'wp-db-driver' );
 
+		echo '<div class="tool-box"><h3 class="title">' . __( 'Supported drivers', 'wp-db-driver' ) . '</h3></div>';
 
-		echo '<table>';
-
+		echo '<table class="form-table">';
 		echo '<tr>';
-		echo '<td>PDO</td>';
+		echo '<th>PDO</th>';
 		echo '<td>' . $loaded_pdo . '</td>';
 		echo '</tr>';
 
 
 		echo '<tr>';
-		echo '<td>MySQLi</td>';
+		echo '<th>MySQLi</th>';
 		echo '<td>' . $loaded_mysqli . '</td>';
 		echo '</tr>';
 
 
 		echo '<tr>';
-		echo '<td>MySQL</td>';
+		echo '<th>MySQL</th>';
 		echo '<td>' . $loaded_mysql . '</td>';
 		echo '</tr>';
 
-		echo '</div>';
+		echo '</table>';
 	}
 
 	public function get_current_driver() {
