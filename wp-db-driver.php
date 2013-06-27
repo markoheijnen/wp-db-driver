@@ -29,6 +29,7 @@ class WP_DB_Driver_Plugin {
 		if ( ! current_user_can( 'manage_options' ) )
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 
+
 		echo '<div class="wrap">';
 
 		screen_icon('options-general');
@@ -71,15 +72,14 @@ class WP_DB_Driver_Plugin {
 	public function get_current_driver() {
 		$driver = false;
 
-		if ( defined( 'WPDB_DRIVER' ) ) {
+		if ( defined( 'WPDB_DRIVER' ) )
 			$driver = WPDB_DRIVER;
-		} elseif ( extension_loaded( 'pdo_mysql' ) ) {
-			$driver = 'pdo_mysql';
-		} elseif ( extension_loaded( 'mysqli' ) ) {
-			$driver = 'mysqli';
-		} elseif ( extension_loaded( 'mysql' ) ) {
-			$driver = 'mysql';
-		}
+		elseif ( extension_loaded( 'pdo_mysql' ) )
+			$driver = 'PDO';
+		elseif ( extension_loaded( 'mysqli' ) )
+			$driver = 'MySQLi';
+		elseif ( extension_loaded( 'mysql' ) )
+			$driver = 'MySQL';
 
 		return $driver;
 	}
