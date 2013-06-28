@@ -103,24 +103,31 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 	 * @return int|false Number of rows affected/selected or false on error
 	 */
 	public function query( $query ) {
+		$return_val = 0;
+
 		try {
 			$this->result = $this->dbh->query( $query );
-		} catch ( Exception $e ) {
+		}
+		catch ( Exception $e ) {
 			if ( WP_DEBUG) {
 				global $wpdb;
 				error_log( "Error executing query: " . $e->getCode() . " - " . $e->getMessage() . " in query " . $query );
 			}
 			return false;
 		}
+
 		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {
 			$return_val = $this->result;
-		} elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
+		}
+		elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
 			$return_val = $this->affected_rows();
-		} elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
+		}
+		elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
 			$this->get_results();
 			return count( $this->fetched_rows );
 		}
-		return true;
+
+		return $return_val;
 	}
 
 	/**
@@ -151,6 +158,7 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 			return $this->fetched_rows;
 		}
 		$this->fetched_rows = array();
+
 		if ( !empty( $this->result ) && $this->result->rowCount() > 0 ) {
 			try {
 				while ( $row = $this->result->fetchObject() ) {
@@ -159,6 +167,7 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 			} catch ( Exception $e ) {
 			}
 		}
+
 		return $this->fetched_rows;
 	}
 

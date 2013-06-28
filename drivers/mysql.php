@@ -93,15 +93,20 @@ class wpdb_driver_mysql implements wpdb_driver {
 	 * @return int|false Number of rows affected/selected or false on error
 	 */
 	public function query( $query ) {
+		$return_val   = 0;
 		$this->result = @mysql_query( $query, $this->dbh );
+
 		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {
 			$return_val = $this->result;
-		} elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
+		}
+		elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
 			$return_val = $this->affected_rows();
-		} elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
+		}
+		elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
 			return is_resource( $this->result ) ? mysql_num_rows( $this->result ) : false ;
 		}
-		return true;
+
+		return $return_val;
 	}
 
 	/**

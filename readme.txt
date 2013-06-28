@@ -23,5 +23,8 @@ This plugin reflects those discussions.
 
 == Changelog ==
 
+= 1.1 ( 2013-06-29 ) =
+* First MySQLi driver
+
 = 1.0 ( 2013-06-28 ) =
 * First version that supports PDO and MySQLi
