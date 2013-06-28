@@ -314,20 +314,3 @@ class wpdb_drivers extends wpdb {
 }
 
 $wpdb = new wpdb_drivers( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
