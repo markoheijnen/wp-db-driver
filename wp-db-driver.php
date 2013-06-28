@@ -15,6 +15,36 @@ class WP_DB_Driver_Plugin {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
 	}
 
+	/**
+	 * Try to delete the custom db.php drop-in.  This doesn't use the
+	 * WP_Filesystem, because it's not available.
+	 */
+	public static function deactivate() {
+		if( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+			$crc1 = md5_file( dirname( __FILE__ ) . '/wp-content/db.php' );
+			$crc2 = md5_file( WP_CONTENT_DIR . '/db.php' );
+			if ( $crc1 === $crc2 ) {
+				if ( false === @unlink( WP_CONTENT_DIR . '/db.php' ) ) {
+					wp_die( __( 'Please remove the custom db.php drop-in before deactivating WP DB Driver', 'wp-db-driver' ) );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Uninstall
+	 */
+	public static function uninstall() {
+		global $wp_filesystem;
+		if( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+			$crc1 = md5_file( dirname( __FILE__ ) . '/wp-content/db.php' );
+			$crc2 = md5_file( WP_CONTENT_DIR . '/db.php' );
+			if ( $crc1 === $crc2 ) {
+				$wp_filesystem->delete( $wp_filesystem->wp_content_dir() . '/db.php' );
+			}
+		}
+	}
+
 	public function add_page() {
 		add_management_page(
 			__( 'WP DB Driver', 'wp-db-driver' ),
@@ -168,3 +198,6 @@ class WP_DB_Driver_Plugin {
 
 if( is_admin() )
 	new WP_DB_Driver_Plugin;
+
+register_deactivation_hook( __FILE__, array( 'WP_DB_Driver_Plugin', 'deactivate' ) );
+register_uninstall_hook( __FILE__, array( 'WP_DB_Driver_Plugin', 'uninstall' ) );
