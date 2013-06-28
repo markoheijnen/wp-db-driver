@@ -259,7 +259,7 @@ class wpdb_drivers extends wpdb {
 		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
 			$this->timer_start();
 
-		$result = $this->dbh->query( $query );
+		$this->result = $this->dbh->query( $query );
 		$this->num_queries++;
 
 		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
