@@ -79,6 +79,7 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 		$dsn = sprintf( 'mysql:host=%1$s;port=%2$d', $host, $port );
 		try {
 			$this->dbh = new PDO( $dsn, $user, $pass );
+			$this->dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 		} catch ( Exception $e ) {
 			return false;
 		}
@@ -90,7 +91,11 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 	 * @return void
 	 */
 	public function select( $db ) {
-		$this->dbh->exec( sprintf( 'USE %s', $db ) );
+		try {
+			$this->dbh->exec( sprintf( 'USE `%s`', $db ) );
+		} catch ( ErrorException $e ) {
+			print_r( $e );
+		}
 	}
 
 	/**
