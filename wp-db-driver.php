@@ -126,7 +126,7 @@ class WP_DB_Driver_Plugin {
 				echo '<form method="post" style="display: inline;">';
 				wp_nonce_field('uninstall-db-nonce');
 
-				echo '<p><strong>' . $this->get_current_driver() . '</strong>';
+				echo '<p><strong>' . $this->get_current_driver() . '</strong> ';
 				submit_button( __( 'Remove', 'wp-db-driver' ), 'primary', 'install-db-php', false );
 				echo '</p>';
 
