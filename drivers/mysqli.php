@@ -120,9 +120,13 @@ class wpdb_driver_mysqli implements wpdb_driver {
 	 */
 	public function get_results() {
 		$ret = array();
-		while ( $row = $this->result->fetch_object() ) {
-			$ret[] = $row;
+
+		if( is_object( $this->result ) ) {
+			while ( $row = $this->result->fetch_object() ) {
+				$ret[] = $row;
+			}
 		}
+
 		return $ret;
 	}
 
