@@ -81,15 +81,21 @@ class wpdb_driver_mysqli implements wpdb_driver {
 	 * @return int|false Number of rows affected/selected or false on error
 	 */
 	public function query( $query ) {
+		$return_val = 0;
+
 		$this->result = $this->dbh->query( $query );
+
 		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {
 			$return_val = $this->result;
-		} elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
+		}
+		elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
 			$return_val = $this->affected_rows();
-		} elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
+		}
+		elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
 			return $this->result->num_rows;
 		}
-		return true;
+
+		return $return_val;
 	}
 
 	/**
