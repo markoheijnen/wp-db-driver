@@ -9,6 +9,10 @@ Version: 1.0
 Author URI: http://core.trac.wordpress.org/ticket/21663
 */
 
+if ( !defined( 'ABSPATH' ) ) {
+	die();
+}
+
 class WP_DB_Driver_Plugin {
 
 	public function __construct() {
