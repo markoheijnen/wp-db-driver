@@ -61,7 +61,7 @@ They should all function equally well for WordPress.  The MySQL extension is bei
 In PHP 5.6, it will no longer be available.  The two alternative drivers are PDO and MySQLi.  If WordPress switches to MySQLi or PDO, some cool new features
 become available to developers.
 
-http://net.tutsplus.com/tutorials/php/pdo-vs-mysqli-which-should-you-use/
+<http://net.tutsplus.com/tutorials/php/pdo-vs-mysqli-which-should-you-use/>
 
 == Upgrade Notice ==
 
