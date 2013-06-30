@@ -13,7 +13,17 @@ The possible new database layer for WordPress core
 The mysql_* functions are officially deprecated for PHP 5.5 and are throwing E_DEPRECATED errors.
 On http://core.trac.wordpress.org/ticket/21663 there is discussion on this topic.
 
-This plugin reflects those discussions. 
+This plugin reflects those discussions.
+
+**Why should I use this plugin?**
+
+You should use this plugin if you want to help test the proposed changes for PDO / MySQLi for WordPress.  Or if you
+need PDO / MySQLi support for some reason (e.g. you're running php 5.5, your server doesn't have classic mysql
+bindings, etc.)
+
+This plugin is still in development.
+
+***Not recommended for use on production sites***
 
 == Installation ==
 
@@ -39,8 +49,14 @@ Added emergency override
 
 == Changelog ==
 
+= 1.2 (2013-06-30) =
+* Added emergency override
+* Updated readme
+
 = 1.1 ( 2013-06-28 ) =
-* First MySQLi driver
+* Fixes for MySQLi driver, PDO driver
+* Uses WP_Filesystem for writing / removing db.php when possible
+* Added deactivate / uninstall code
 
 = 1.0 ( 2013-06-28 ) =
 * First version that supports PDO and MySQLi
