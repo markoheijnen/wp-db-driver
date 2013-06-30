@@ -17,6 +17,17 @@ class WP_DB_Driver_Plugin {
 
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
+		add_action( 'admin_init', array( $this, 'remove_emergency_cookie' ) );
+	}
+
+	/**
+	 * If the user has enabled emergency mode, then re-installs the db.php driver,
+	 * then automatically disable emergency mode.
+	 */
+	public function remove_emergency_cookie() {
+		if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'install-db-nonce' ) ) {
+			setcookie( 'wp-db-driver-emergency-override', '', time() - YEAR_IN_SECONDS, '/', $_SERVER['HTTP_HOST'] );
+		}
 	}
 
 	/**
