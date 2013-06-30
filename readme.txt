@@ -1,6 +1,6 @@
 === WP DB Driver ===
 Contributors: kurtpayne, markoheijnen
-Tags: database, backend
+Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
 Tested up to: 3.6
 Stable tag: 1.2
