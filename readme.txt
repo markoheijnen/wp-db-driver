@@ -42,8 +42,28 @@ You can visit <http://yoursite.com/?wp-db-driver-emergency-override=1> (replace 
 Then you can login to your admin to deactivate the plugin and restore your site's functionality.
 
 If you need to uninstall manually, you should remove the plugin folder as well as `wp-content/db.php`.
-== Upgrade Notice ==
 
+**In what order are the drivers picked?**
+
+PDO > MySQLi > MySQL
+
+**How do I specify a driver?**
+
+In your wp-config.php, add a new constant:
+
+`define( 'WPDB_DRIVER', 'pdo_mysql' );`
+
+You can specify `pdo_mysql`, `mysqli`, or `mysql`.  Any other driver will cause an error.
+
+**Which driver is best for my site?**
+
+They should all function equally well for WordPress.  The MySQL extension is being retired.  In PHP 5.5, using this extension issues E_DEPRECATED errors.
+In PHP 5.6, it will no longer be available.  The two alternative drivers are PDO and MySQLi.  If WordPress switches to MySQLi or PDO, some cool new features
+become available to developers.
+
+<http://net.tutsplus.com/tutorials/php/pdo-vs-mysqli-which-should-you-use/>
+
+== Upgrade Notice ==
 
 Added emergency override
 
