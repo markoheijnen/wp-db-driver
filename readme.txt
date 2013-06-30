@@ -3,7 +3,7 @@ Contributors: kurtpayne, markoheijnen
 Tags: database, backend
 Requires at least: 3.6
 Tested up to: 3.6
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 
 The possible new database layer for WordPress core
