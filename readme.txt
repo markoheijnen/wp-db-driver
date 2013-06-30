@@ -18,8 +18,24 @@ This plugin reflects those discussions.
 == Installation ==
 
 1. Verify that you have PDO or MySQLi
-2. Go to the settings page to install db.php or copy `db.php` to your WordPress content directory (`wp-content/` by default.
+2. Go to the settings page to install db.php or copy `wp-content/db.php` to your WordPress content directory (`wp-content/` by default.
 3. Done!
+
+== Screenshots ==
+
+1. The main settings page reports on what database drivers your PHP installation supports and lets you enable or disable the custom db.php drop-in for this plugin.
+
+== Frequently Asked Questions ==
+**Help, I've broken my site!**
+
+You can visit <http://yoursite.com/?wp-db-driver-emergency-override=1> (replace yoursite.com with your real WordPress blog address) to temporarily disable this plugin.
+Then you can login to your admin to deactivate the plugin and restore your site's functionality.
+
+If you need to uninstall manually, you should remove the plugin folder as well as `wp-content/db.php`.
+== Upgrade Notice ==
+
+
+Added emergency override
 
 == Changelog ==
 
