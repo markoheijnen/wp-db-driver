@@ -191,4 +191,12 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 	public function db_version() {
 		return preg_replace( '/[^0-9.].*/', '', $this->dbh->getAttribute( PDO::ATTR_SERVER_VERSION ) );
 	}
+
+	/**
+	 * Don't save any state.  The db wrapper should call connect() again.
+	 * @return array
+	 */
+	public function __sleep() {
+		return array();
+	}
 }
