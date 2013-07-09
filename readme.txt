@@ -3,7 +3,7 @@ Contributors: kurtpayne, markoheijnen
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
 Tested up to: 3.6
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 
 The possible new database layer for WordPress core
@@ -68,6 +68,11 @@ become available to developers.
 Added emergency override
 
 == Changelog ==
+
+= 1.3 (2013-07-09) =
+* Show install button when db.php is different
+* Don't show remove button when mysql extension isn't installed
+* Compatibility fixes for unit tests.
 
 = 1.2 (2013-06-30) =
 * Added emergency override
