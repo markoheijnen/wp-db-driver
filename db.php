@@ -83,9 +83,9 @@ class wpdb_drivers extends wpdb {
 	 * @param string   $collate The collation (optional)
 	 */
 	function set_charset($dbh, $charset = null, $collate = null) {
-		if ( !isset($charset) )
+		if ( ! isset( $charset ) )
 			$charset = $this->charset;
-		if ( !isset($collate) )
+		if ( ! isset( $collate ) )
 			$collate = $this->collate;
 		if ( $this->has_cap( 'collation', $dbh ) && !empty( $charset ) ) {
 			$query = $this->prepare( 'SET NAMES %s', $charset );
@@ -112,10 +112,8 @@ class wpdb_drivers extends wpdb {
 	}
 
 	/**
-	 * Real escape, using mysql_real_escape_string() or addslashes()
+	 * Real escape
 	 *
-	 * @see mysql_real_escape_string()
-	 * @see addslashes()
 	 * @since 2.8.0
 	 * @access private
 	 *
@@ -123,10 +121,7 @@ class wpdb_drivers extends wpdb {
 	 * @return string escaped
 	 */
 	function _real_escape( $string ) {
-		if ( $this->dbh && $this->real_escape )
-			return $this->dbh->escape( $string );
-		else
-			return addslashes( $string );
+		return $this->dbh->escape( $string );
 	}
 
 	/**
