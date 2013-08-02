@@ -3,7 +3,7 @@ Contributors: kurtpayne, markoheijnen
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
 Tested up to: 3.6
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv2 or later
 
 The possible new database layer for WordPress core
@@ -69,19 +69,23 @@ Added emergency override
 
 == Changelog ==
 
+= 1.4 (2013-08-02) =
+* Fix notices due changes in WordPress 3.6.
+* Add SSL support. Props hypertextranch.
+
 = 1.3 (2013-07-09) =
-* Show install button when db.php is different
-* Don't show remove button when mysql extension isn't installed
+* Show install button when db.php is different.
+* Don't show remove button when mysql extension isn't installed.
 * Compatibility fixes for unit tests.
 
 = 1.2 (2013-06-30) =
-* Added emergency override
-* Updated readme
+* Added emergency override.
+* Updated readme.
 
 = 1.1 ( 2013-06-28 ) =
-* Fixes for MySQLi driver, PDO driver
-* Uses WP_Filesystem for writing / removing db.php when possible
-* Added deactivate / uninstall code
+* Fixes for MySQLi driver, PDO driver.
+* Uses WP_Filesystem for writing / removing db.php when possible.
+* Added deactivate / uninstall code.
 
 = 1.0 ( 2013-06-28 ) =
-* First version that supports PDO and MySQLi
+* First version that supports PDO and MySQLi. Props kurtpayne and scribu.
