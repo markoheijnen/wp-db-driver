@@ -75,14 +75,27 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 	 * Connect to database
 	 * @return bool
 	 */
-	public function connect( $host, $user, $pass, $port = 3306 ) {
+	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
 		$dsn = sprintf( 'mysql:host=%1$s;port=%2$d', $host, $port );
+
 		try {
-			$this->dbh = new PDO( $dsn, $user, $pass );
+			$pdo_options = array();
+			$pdo_options[ PDO::MYSQL_ATTR_SSL_KEY ]    = $options['key'];
+			$pdo_options[ PDO::MYSQL_ATTR_SSL_CERT ]   = $options['cert'];
+			$pdo_options[ PDO::MYSQL_ATTR_SSL_CA ]     = $options['ca'];
+			$pdo_options[ PDO::MYSQL_ATTR_SSL_CAPATH ] = $options['ca_path'];
+			$pdo_options[ PDO::MYSQL_ATTR_SSL_CIPHER ] = $options['cipher'];
+
+			// Cleanup empty values
+			$pdo_options = array_filter( $pdo_options );
+
+			$this->dbh = new PDO( $dsn, $user, $pass, $pdo_options );
 			$this->dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-		} catch ( Exception $e ) {
+		}
+		catch ( Exception $e ) {
 			return false;
 		}
+
 		return true;
 	}
 
