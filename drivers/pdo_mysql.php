@@ -80,14 +80,17 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 
 		try {
 			$pdo_options = array();
-			$pdo_options[ PDO::MYSQL_ATTR_SSL_KEY ]    = $options['key'];
-			$pdo_options[ PDO::MYSQL_ATTR_SSL_CERT ]   = $options['cert'];
-			$pdo_options[ PDO::MYSQL_ATTR_SSL_CA ]     = $options['ca'];
-			$pdo_options[ PDO::MYSQL_ATTR_SSL_CAPATH ] = $options['ca_path'];
-			$pdo_options[ PDO::MYSQL_ATTR_SSL_CIPHER ] = $options['cipher'];
 
-			// Cleanup empty values
-			$pdo_options = array_filter( $pdo_options );
+			if ( ! empty( $options['key'] ) && ! empty( $options['cert'] ) && ! empty( $options['ca'] ) ) {
+				$pdo_options[ PDO::MYSQL_ATTR_SSL_KEY ]    = $options['key'];
+				$pdo_options[ PDO::MYSQL_ATTR_SSL_CERT ]   = $options['cert'];
+				$pdo_options[ PDO::MYSQL_ATTR_SSL_CA ]     = $options['ca'];
+				$pdo_options[ PDO::MYSQL_ATTR_SSL_CAPATH ] = $options['ca_path'];
+				$pdo_options[ PDO::MYSQL_ATTR_SSL_CIPHER ] = $options['cipher'];
+
+				// Cleanup empty values
+				$pdo_options = array_filter( $pdo_options );
+			}
 
 			$this->dbh = new PDO( $dsn, $user, $pass, $pdo_options );
 			$this->dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
