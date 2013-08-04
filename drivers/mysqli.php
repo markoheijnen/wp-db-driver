@@ -83,7 +83,7 @@ class wpdb_driver_mysqli implements wpdb_driver {
 	 * @return void
 	 */
 	public function select( $db ) {
-		$this->dbh->select_db( $db );
+		return $this->dbh->select_db( $db );
 	}
 
 	/**

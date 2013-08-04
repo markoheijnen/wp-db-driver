@@ -81,9 +81,9 @@ class wpdb_driver_mysql implements wpdb_driver {
 	 */
 	public function select( $db ) {
 		if ( WP_DEBUG ) {
-			 mysql_select_db( $db, $this->dbh );
+			return mysql_select_db( $db, $this->dbh );
 		} else {
-			@mysql_select_db( $db, $this->dbh );
+			return @mysql_select_db( $db, $this->dbh );
 		}
 	}
 
@@ -103,7 +103,7 @@ class wpdb_driver_mysql implements wpdb_driver {
 			$return_val = $this->affected_rows();
 		}
 		elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
-			return is_resource( $this->result ) ? mysql_num_rows( $this->result ) : false ;
+			return is_resource( $this->result ) ? mysql_num_rows( $this->result ) : false;
 		}
 
 		return $return_val;
