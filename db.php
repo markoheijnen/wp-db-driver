@@ -182,6 +182,7 @@ class wpdb_drivers extends wpdb {
 	 */
 	function flush() {
 		$this->dbh->flush();
+		parent::flush();
 	}
 
 	/**
