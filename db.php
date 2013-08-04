@@ -182,6 +182,11 @@ class wpdb_drivers extends wpdb {
 	 */
 	function flush() {
 		$this->dbh->flush();
+		$this->last_result = array();
+		$this->col_info    = null;
+		$this->last_query  = null;
+		$this->rows_affected = $this->num_rows = 0;
+		$this->last_error  = '';
 	}
 
 	/**
