@@ -5,7 +5,7 @@ Plugin URI: http://core.trac.wordpress.org/ticket/21663
 Description: Enables PDO or MySQLi
 Author: Kurt Payne and Marko Heijnen
 Text Domain: wp-db-driver
-Version: 1.4
+Version: 1.5
 Author URI: http://core.trac.wordpress.org/ticket/21663
 */
 
