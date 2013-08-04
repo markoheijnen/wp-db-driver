@@ -103,7 +103,7 @@ class wpdb_driver_mysqli implements wpdb_driver {
 			$return_val = $this->affected_rows();
 		}
 		elseif ( preg_match( '/^\s*select\s/i', $query ) ) {
-			return $this->result->num_rows;
+			return is_object( $this->result ) ? $this->result->num_rows : false;
 		}
 
 		return $return_val;
