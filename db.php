@@ -297,7 +297,7 @@ class wpdb_drivers extends wpdb {
 			// Return number of rows affected
 			$return_val = $this->rows_affected;
 		} else {
-			$return_val = $this->num_rows = count( $this->last_result );
+			$return_val = $this->num_rows = count( $this->result );
 		}
 
 		$this->last_result = $this->dbh->get_results();
