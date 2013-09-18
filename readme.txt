@@ -3,7 +3,7 @@ Contributors: kurtpayne, markoheijnen
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
 Tested up to: 3.6
-Stable tag: 1.5
+Stable tag: 1.6
 License: GPLv2 or later
 
 The possible new database layer for WordPress core
@@ -68,6 +68,10 @@ become available to developers.
 Added emergency override
 
 == Changelog ==
+
+= 1.6 (2013-08-06) =
+* Add error_handler
+* Trowing doing_it_wrong message for all mysql_* functions
 
 = 1.5 (2013-08-04) =
 * Fix dbDelta() to create tables when the tables do not exists

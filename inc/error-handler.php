@@ -1,0 +1,22 @@
+<?php
+
+function wp_set_error_handler() {
+	if ( defined( 'E_DEPRECATED' ) )
+			$errcontext = E_WARNING | E_DEPRECATED;
+		else
+			$errcontext = E_WARNING;
+
+	set_error_handler( function( $errno, $errstr, $errfile ) {
+		if ( 'wp-db.php' !== basename( $errfile ) ) {
+			if ( preg_match( '/^(mysql_[a-zA-Z0-9_]+)/', $errstr, $matches ) ) {
+				_doing_it_wrong( $matches[1], __('Please talk to the database using $wpdb' ), '3.7' );
+
+				return apply_filters( 'wpdb_drivers_raw_mysql_call_trigger_error', true );
+			}
+		}
+
+		return apply_filters( 'wp_error_handler', false, $errno, $errstr, $errfile );
+	}, $errcontext );
+}
+
+wp_set_error_handler();
