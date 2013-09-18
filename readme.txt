@@ -69,7 +69,7 @@ Added emergency override
 
 == Changelog ==
 
-= 1.6 (2013-08-06) =
+= 1.6 (2013-09-18) =
 * Fix returning incorrect number of rows for some queries. Props markmont
 * Add error_handler
 * Trowing doing_it_wrong message for all mysql_* functions
