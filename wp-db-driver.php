@@ -18,6 +18,8 @@ class WP_DB_Driver_Plugin {
 
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
+		add_action('network_admin_menu', array( $this, 'add_page' ) );
+
 		add_action( 'admin_init', array( $this, 'remove_emergency_cookie' ) );
 	}
 
@@ -62,13 +64,25 @@ class WP_DB_Driver_Plugin {
 	}
 
 	public function add_page() {
-		add_management_page(
-			__( 'WP DB Driver', 'wp-db-driver' ),
-			__( 'WP DB Driver', 'wp-db-driver' ),
-			'manage_options',
-			'wp-db-driver',
-			array( $this, 'page_overview' )
-		);
+		if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
+			add_submenu_page(
+				'settings.php', 
+				__( 'WP DB Driver', 'wp-db-driver' ),
+				__( 'WP DB Driver', 'wp-db-driver' ),
+				'manage_options',
+				'wp-db-driver',
+				array( $this, 'page_overview' )
+			);
+		}
+		else {
+			add_management_page(
+				__( 'WP DB Driver', 'wp-db-driver' ),
+				__( 'WP DB Driver', 'wp-db-driver' ),
+				'manage_options',
+				'wp-db-driver',
+				array( $this, 'page_overview' )
+			);
+		}
 	}
 
 	public function page_overview() {
