@@ -2,7 +2,7 @@
 Contributors: kurtpayne, markoheijnen
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
-Tested up to: 3.6
+Tested up to: 3.8.1
 Stable tag: 1.7
 License: GPLv2 or later
 
