@@ -3,7 +3,7 @@ Contributors: kurtpayne, markoheijnen
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
 Tested up to: 3.6
-Stable tag: 1.6
+Stable tag: 1.7
 License: GPLv2 or later
 
 The possible new database layer for WordPress core
@@ -61,11 +61,27 @@ become available to developers.
 
 <http://net.tutsplus.com/tutorials/php/pdo-vs-mysqli-which-should-you-use/>
 
+**How to configure SSL?**
+You can set defined in your wp-config.php to make it work. This only works for MySQLi and PDO.
+These defines are: DB_SSL_KEY, DB_SSL_CERT, DB_SSL_CA, DB_SSL_CA_PATH and DB_SSL_CIPHER.
+
+In case of a different port number then you can pass this to your database host like: 127.0.0.1:
+
+For more information see:
+- http://dev.mysql.com/doc/refman/5.5/en/ssl-connections.html
+
 == Upgrade Notice ==
 
 Added emergency override
 
 == Changelog ==
+
+= 1.7 (2014-01-30) =
+* Synced with the latest changes of WordPress in trunk
+* Works when plugins folder has been changed
+* Added network support
+* Security enhanchement when using a network installation
+* Updated readme
 
 = 1.6 (2013-09-18) =
 * Fix returning incorrect number of rows for some queries. Props markmont
