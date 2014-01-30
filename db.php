@@ -43,6 +43,13 @@ class wpdb_drivers extends wpdb {
 
 		if ( !class_exists( $class ) ) {
 			wp_load_translations_early();
+
+			// Load custom DB error template, if present.
+			if ( file_exists( WP_CONTENT_DIR . '/db-error.php' ) ) {
+				require_once( WP_CONTENT_DIR . '/db-error.php' );
+				die();
+			}
+
 			$this->bail( sprintf( __( "
 				<h1>No database drivers found</h1>.
 				<p>WordPress requires the mysql, mysqli, or pdo_mysql extension to talk to your database.</p>
@@ -225,6 +232,13 @@ class wpdb_drivers extends wpdb {
 
 		if ( ! $this->dbh->connect( $host, $this->dbuser, $this->dbpassword, $port, $options ) ) {
 			wp_load_translations_early();
+
+			// Load custom DB error template, if present.
+			if ( file_exists( WP_CONTENT_DIR . '/db-error.php' ) ) {
+				require_once( WP_CONTENT_DIR . '/db-error.php' );
+				die();
+			}
+
 			$this->bail( sprintf( __( "
 <h1>Error establishing a database connection</h1>
 <p>This either means that the username and password information in your <code>wp-config.php</code> file is incorrect or we can't contact the database server at <code>%s</code>. This could mean your host's database server is down.</p>
