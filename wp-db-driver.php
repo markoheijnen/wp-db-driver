@@ -1,15 +1,16 @@
 <?php
 /*
 Plugin Name: WP DB Driver
-Plugin URI: http://core.trac.wordpress.org/ticket/21663
+Plugin URI:  http://core.trac.wordpress.org/ticket/21663
 Description: Enables PDO or MySQLi
 Author: Kurt Payne and Marko Heijnen
 Text Domain: wp-db-driver
-Version: 1.6
-Author URI: http://core.trac.wordpress.org/ticket/21663
+Version:     1.6
+Author URI:  http://core.trac.wordpress.org/ticket/21663
+Network:     True
 */
 
-if ( !defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
