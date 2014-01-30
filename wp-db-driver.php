@@ -107,7 +107,7 @@ class WP_DB_Driver_Plugin {
 		$do_install = ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'install-db-nonce' ) );
 		$do_uninstall = ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'uninstall-db-nonce' ) );
 
-		if ( $do_install || $do_uninstall ) {
+		if ( is_super_admin() && ( $do_install || $do_uninstall ) ) {
 
 			// Ask for credentials, if necessary
 			if ( false === ( $creds = request_filesystem_credentials( $url, $method, false, false, $form_fields ) ) ) {
@@ -154,8 +154,9 @@ class WP_DB_Driver_Plugin {
 
 				echo '<p><strong>' . $this->get_current_driver() . '</strong> &nbsp; ';
 
-				if( function_exists( 'mysql' ) )
+				if( function_exists( 'mysql' ) && is_super_admin() ) {
 					submit_button( __( 'Remove', 'wp-db-driver' ), 'primary', 'install-db-php', false );
+				}
 
 				echo '</p>';
 
@@ -166,7 +167,11 @@ class WP_DB_Driver_Plugin {
 				wp_nonce_field('install-db-nonce');
 
 				echo '<p><strong>' . __( 'Another db.php is installed', 'wp-db-driver' ) . '</strong> &nbsp; ';
-				submit_button( __( 'Install', 'wp-db-driver' ), 'primary', 'install-db-php', false );
+
+				if( is_super_admin() ) {
+					submit_button( __( 'Install', 'wp-db-driver' ), 'primary', 'install-db-php', false );
+				}
+
 				echo '</p>';
 
 				echo '</form>';
@@ -177,7 +182,11 @@ class WP_DB_Driver_Plugin {
 			wp_nonce_field('install-db-nonce');
 
 			echo '<p><strong>' . __( 'No custom db.php installed', 'wp-db-driver' ) . '</strong> &nbsp; ';
-			submit_button( __( 'Install', 'wp-db-driver' ), 'primary', 'install-db-php', false );
+
+			if( is_super_admin() ) {
+				submit_button( __( 'Install', 'wp-db-driver' ), 'primary', 'install-db-php', false );
+			}
+
 			echo '</p>';
 
 			echo '</form>';
