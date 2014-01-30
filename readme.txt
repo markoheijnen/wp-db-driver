@@ -23,8 +23,6 @@ bindings, etc.)
 
 This plugin is still in development.
 
-***Not recommended for use on production sites***
-
 == Installation ==
 
 1. Verify that you have PDO or MySQLi
