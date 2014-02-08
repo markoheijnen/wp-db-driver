@@ -16,7 +16,7 @@ function wp_set_error_handler() {
 		}
 
 		if ( preg_match( '/^(mysql_[a-zA-Z0-9_]+)/', $errstr, $matches ) ) {
-			_doing_it_wrong( $matches[1], __('Please talk to the database using $wpdb' ), '4.0' );
+			_doing_it_wrong( $matches[1], 'Please talk to the database using $wpdb', '4.0' );
 
 			return apply_filters( 'wpdb_drivers_raw_mysql_call_trigger_error', true );
 		}
