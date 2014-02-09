@@ -155,6 +155,16 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 	}
 
 	/**
+	 * Get result data.
+	 * @param int The row number from the result that's being retrieved. Row numbers start at 0.
+	 * @param int The offset of the field being retrieved.
+	 * @return array|false The contents of one cell from a MySQL result set on success, or false on failure.
+	 */
+	public function query_result( $row, $field = 0 ) {
+		return $this->result->fetchColumn( $row, $field );
+	}
+
+	/**
 	 * Get number of rows affected
 	 * @return int
 	 */

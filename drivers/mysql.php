@@ -110,6 +110,16 @@ class wpdb_driver_mysql implements wpdb_driver {
 	}
 
 	/**
+	 * Get result data.
+	 * @param int The row number from the result that's being retrieved. Row numbers start at 0.
+	 * @param int The offset of the field being retrieved.
+	 * @return array|false The contents of one cell from a MySQL result set on success, or false on failure.
+	 */
+	public function query_result( $row, $field = 0 ) {
+		return mysql_result( $this->result, $row, $field );
+	}
+
+	/**
 	 * Get number of rows affected
 	 * @return int
 	 */
@@ -157,4 +167,5 @@ class wpdb_driver_mysql implements wpdb_driver {
 	public function db_version() {
 		return preg_replace( '/[^0-9.].*/', '', mysql_get_server_info( $this->dbh ) );
 	}
+
 }
