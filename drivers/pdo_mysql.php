@@ -161,7 +161,11 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 	 * @return array|false The contents of one cell from a MySQL result set on success, or false on failure.
 	 */
 	public function query_result( $row, $field = 0 ) {
-		return $this->result->fetchColumn( $row, $field );
+		if( $row > 1 ) {
+			$this->result->fetch( PDO::FETCH_ASSOC,PDO::FETCH_ORI_NEXT, $row );
+		}
+
+		return $this->result->fetchColumn( $field );
 	}
 
 	/**
