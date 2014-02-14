@@ -1059,6 +1059,7 @@ class wpdb_drivers {
 		if ( is_null( $query ) )
 			return;
 
+		// This is not meant to be foolproof -- but it will catch obviously incorrect usage. 
 		if ( strpos( $query, '%' ) === false ) { 
 			_doing_it_wrong( 'wpdb::prepare', sprintf( __( 'The query argument of %s must have a placeholder.' ), 'wpdb::prepare()' ), '3.9' ); 
 		} 
