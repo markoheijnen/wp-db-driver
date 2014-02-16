@@ -587,7 +587,11 @@ class wpdb_drivers {
 		if ( 'col_info' == $name )
 			$this->load_col_info();
 
-		return $this->$name;
+		if( isset( $this->$name ) ) {
+			return $this->$name;
+		}
+
+		return false;
 	}
 
 	/**
