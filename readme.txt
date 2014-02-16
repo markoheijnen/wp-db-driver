@@ -76,8 +76,13 @@ Added emergency override
 
 == Changelog ==
 
+= 1.8  =
+* Synced with trunk to Changeset 27147 excluding 27075
+* Don't extend wpdb anymore to be on the safe side
+* Works with socket connections
+
 = 1.7 (2014-01-30) =
-* Synced with the latest changes of WordPress in trunk
+* Synced with trunk to Changeset 25703
 * Works when plugins folder has been changed
 * Added network support
 * Security enhanchement when using a network installation
