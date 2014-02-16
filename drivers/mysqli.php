@@ -59,6 +59,18 @@ class wpdb_driver_mysqli implements wpdb_driver {
 	}
 
 	/**
+	 * Check if server is still connected
+	 * @return bool
+	 */
+	public function is_connected() {
+		if ( ! $this->dbh || 2006 ==  $this->dbh->connect_errno ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Connect to database
 	 * @return bool
 	 */
@@ -81,6 +93,14 @@ class wpdb_driver_mysqli implements wpdb_driver {
 		}
 
 		return ( ! mysqli_connect_error() );
+	}
+
+	/**
+	 * Ping a server connection or reconnect if there is no connection
+	 * @return bool
+	 */
+	public function ping() {
+		return @ $this->dbh->ping();
 	}
 
 	/**

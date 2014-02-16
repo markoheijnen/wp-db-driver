@@ -59,10 +59,22 @@ class wpdb_driver_mysql implements wpdb_driver {
 	}
 
 	/**
+	 * Check if server is still connected
+	 * @return bool
+	 */
+	public function is_connected() {
+		if ( ! $this->dbh || 2006 == mysql_errno( $this->dbh ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Connect to database
 	 * @return bool
 	 */
-	public function connect( $host, $user, $pass, $port = 3306, $options = array()  ) {
+	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
 
 		$new_link = defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true;
 		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
@@ -73,6 +85,14 @@ class wpdb_driver_mysql implements wpdb_driver {
 			$this->dbh = @mysql_connect( "$host:$port", $user, $pass, $new_link, $client_flags );
 		}
 		return ( false !== $this->dbh );
+	}
+
+	/**
+	 * Ping a server connection or reconnect if there is no connection
+	 * @return bool
+	 */
+	public function ping() {
+		return @ mysql_ping( $this->dbh );
 	}
 
 	/**

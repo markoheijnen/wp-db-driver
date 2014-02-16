@@ -72,6 +72,18 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 	}
 
 	/**
+	 * Check if server is still connected
+	 * @return bool
+	 */
+	public function is_connected() {
+		if ( ! $this->dbh || 2006 == $this->dbh->errorCode() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Connect to database
 	 * @return bool
 	 */
@@ -105,6 +117,14 @@ class wpdb_driver_pdo_mysql implements wpdb_driver {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Ping a server connection or reconnect if there is no connection
+	 * @return bool
+	 */
+	public function ping() {
+		return (bool) $this->query('SELECT 1');
 	}
 
 	/**

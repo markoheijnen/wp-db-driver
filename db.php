@@ -112,6 +112,16 @@ class wpdb_drivers {
 	 */
 	var $queries;
 
+	/** 
+	 * The number of times to retry reconnecting before dying. 
+	 * 
+	 * @since 3.9.0 
+	 * @access protected 
+	 * @see wpdb::check_connection() 
+	 * @var int 
+	 */ 
+	 protected $reconnect_retries = 5; 
+
 	/**
 	 * WordPress table prefix
 	 *
@@ -641,7 +651,7 @@ class wpdb_drivers {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @param resource $dbh     The resource given by mysql_connect
+	 * @param resource $dbh     The resource given by the driver
 	 * @param string   $charset The character set (optional)
 	 * @param string   $collate The collation (optional)
 	 */
@@ -1198,11 +1208,17 @@ class wpdb_drivers {
 	}
 
 	/**
-	 * Connect to and select database
+	 * Connect to and select database.
 	 *
 	 * @since 3.0.0
-	 */
-	function db_connect() {
+	 * 
+	 * @param bool $allow_bail Optional. Allows the function to bail, default true. If this is set 
+	 *                         to false, you will need to handle the lack of database connection 
+	 *                         manually. Available since 3.9.0. 
+	 * 
+	 * @return bool True with a successful connection, false on failure. 
+	 */ 
+	function db_connect( $allow_bail = true ) {
 		$this->is_mysql = true;
 
 		if ( false !== strpos( $this->dbhost, ':' ) ) {
@@ -1220,7 +1236,9 @@ class wpdb_drivers {
 		$options['ca_path'] = defined( 'DB_SSL_CA_PATH' ) ? DB_SSL_CA_PATH : null;
 		$options['cipher'] = defined( 'DB_SSL_CIPHER' ) ? DB_SSL_CIPHER : null;
 
-		if ( ! $this->dbh->connect( $host, $this->dbuser, $this->dbpassword, $port, $options ) ) {
+		$is_connected = $this->dbh->connect( $host, $this->dbuser, $this->dbpassword, $port, $options );
+
+		if ( ! $is_connected && $allow_bail ) {
 			wp_load_translations_early();
 
 			// Load custom DB error template, if present.
@@ -1240,17 +1258,77 @@ class wpdb_drivers {
 <p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='http://wordpress.org/support/'>WordPress Support Forums</a>.</p>
 " ), htmlspecialchars( $this->dbhost, ENT_QUOTES ) ), 'db_connect_fail' );
 
-			return;
+			return false;
+		}
+		else if ( $is_connected ) { 
+			$this->set_charset( $this->dbh );
+
+			$this->set_sql_mode();
+
+			$this->ready = true;
+
+			$this->select( $this->dbname, $this->dbh );
+
+			return true;
 		}
 
-		$this->set_charset( $this->dbh );
-
-		$this->set_sql_mode();
-
-		$this->ready = true;
-
-		$this->select( $this->dbname, $this->dbh );
+		return false;
 	}
+
+	/**
+	 * Check that the connection to the database is still up. If not, try to reconnect.
+	 *
+	 * If this function is unable to reconnect, it will forcibly die.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @return bool True if the connection is up.
+	 */
+	function check_connection() {
+		if ( $this->dbh->ping() ) {
+			return true;
+		}
+
+		$error_reporting = false;
+
+		// Disable warnings, as we don't want to see a multitude of "unable to connect" messages
+		if ( WP_DEBUG ) {
+			$error_reporting = error_reporting();
+			error_reporting( $error_reporting & ~E_WARNING );
+		}
+
+		for ( $tries = 1; $tries <= $this->reconnect_retries; $tries++ ) {
+			// On the last try, re-enable warnings. We want to see a single instance of the
+			// "unable to connect" message on the bail() screen, if it appears.
+			if ( $this->reconnect_retries === $tries && WP_DEBUG ) {
+				error_reporting( $error_reporting );
+			}
+
+			if ( $this->db_connect( false ) ) {
+				if ( $error_reporting ) {
+					error_reporting( $error_reporting );
+				}
+
+				return true;
+			}
+
+			sleep( 1 );
+		}
+
+		// We weren't able to reconnect, so we better bail.
+		$this->bail( sprintf( ( "
+<h1>Error reconnecting to the database</h1>
+<p>This means that we lost contact with the database server at <code>%s</code>. This could mean your host's database server is down.</p>
+<ul>
+	<li>Are you sure that the database server is running?</li>
+	<li>Are you sure that the database server is not under particularly heavy load?</li>
+</ul>
+<p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='http://wordpress.org/support/'>WordPress Support Forums</a>.</p>
+" ), htmlspecialchars( $this->dbhost, ENT_QUOTES ) ), 'db_connect_fail' );
+
+	// Call dead_db() if bail didn't die, because this database is no more. It has ceased to be (at least temporarily).
+	dead_db();
+}
 
 	/**
 	 * Perform a MySQL database query, using current database connection.
@@ -1287,14 +1365,14 @@ class wpdb_drivers {
 		// Keep track of the last query for debug..
 		$this->last_query = $query;
 
-		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
-			$this->timer_start();
+		$this->_do_query( $query );
 
-		$this->result = $this->dbh->query( $query );
-		$this->num_queries++;
-
-		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
-			$this->queries[] = array( $query, $this->timer_stop(), $this->get_caller() );
+		// MySQL server has gone away, try to reconnect
+		if ( ! $this->dbh->is_connected() ) {
+			if ( $this->check_connection() ) {
+				$this->_do_query( $query );
+			}
+		}
 
 		// If there is an error then take note of it..
 		if ( $this->last_error = $this->dbh->get_error_message() ) {
@@ -1324,6 +1402,29 @@ class wpdb_drivers {
 		$this->last_result = $this->dbh->get_results();
 
 		return $return_val;
+	}
+
+	/**
+	 * Internal function to perform the mysql_query call
+	 *
+	 * @since 3.9.0
+	 *
+	 * @access private
+	 * @see wpdb::query()
+	 *
+	 * @param string $query The query to run
+	 */
+	private function _do_query( $query ) { 
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
+			$this->timer_start();
+		}
+
+		$this->result = $this->dbh->query( $query );
+		$this->num_queries++;
+
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
+			$this->queries[] = array( $query, $this->timer_stop(), $this->get_caller() );
+		}
 	}
 
 	/**
