@@ -6,9 +6,13 @@ Tested up to: 3.8.1
 Stable tag: 1.7
 License: GPLv2 or later
 
-The possible new database layer for WordPress core
+An improved database layer for WordPress
 
 == Description ==
+
+This plugin adds an improved database layer to WordPress. It allows you to do more then the default one and is always up-to-date with the changes core makes.
+
+**mysql_* functions**
 
 The mysql_* functions are officially deprecated for PHP 5.5 and are throwing E_DEPRECATED errors.
 On http://core.trac.wordpress.org/ticket/21663 there is discussion on this topic.
@@ -17,11 +21,7 @@ This plugin reflects those discussions.
 
 **Why should I use this plugin?**
 
-You should use this plugin if you want to help test the proposed changes for PDO / MySQLi for WordPress.  Or if you
-need PDO / MySQLi support for some reason (e.g. you're running php 5.5, your server doesn't have classic mysql
-bindings, etc.)
-
-This plugin is still in development.
+You should use this plugin if you want to start using PDO / MySQLi for WordPress.
 
 == Installation ==
 
