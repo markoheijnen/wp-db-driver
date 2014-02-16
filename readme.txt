@@ -78,8 +78,12 @@ Added emergency override
 
 = 1.8  =
 * Synced with trunk to Changeset 27147 excluding 27075
+ * Ensure compatibility with MySQL 5.6 which has stricter SQL modes by default
+ * Throw an incorrect usage notice when the query argument of wpdb::prepare() does not include a placeholder.
+ * When the MySQL server has "gone away," attempt to reconnect and retry the query.
 * Don't extend wpdb anymore to be on the safe side
 * Works with socket connections
+* Added a banner image for WordPress.org. Thanks to Marcel van der Horst
 
 = 1.7 (2014-01-30) =
 * Synced with trunk to Changeset 25703
