@@ -521,11 +521,11 @@ class wpdb_drivers {
 				die();
 			}
 
-			$this->bail( sprintf( __( "
+			$this->bail( __( "
 				<h1>No database drivers found</h1>.
 				<p>WordPress requires the mysql, mysqli, or pdo_mysql extension to talk to your database.</p>
 				<p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='http://wordpress.org/support/'>WordPress Support Forums</a>.</p>
-			"), 'db_connect_fail' ) );
+			"), 'db_connect_fail' );
 		}
 
 		$this->dbh = new $class();
