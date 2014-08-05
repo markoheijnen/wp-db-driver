@@ -128,6 +128,17 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	}
 
 	/**
+	 * Sets the connection's character set.
+	 *
+	 * @param resource $dbh     The resource given by the driver
+	 * @param string   $charset The character set (optional)
+	 * @param string   $collate The collation (optional)
+	 */
+	public function set_charset( $charset = null, $collate = null ) {
+		return false;
+	}
+
+	/**
 	 * Select database
 	 * @return void
 	 */

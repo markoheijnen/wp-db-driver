@@ -659,16 +659,25 @@ class wpdb_drivers {
 	 * @param string   $charset The character set (optional)
 	 * @param string   $collate The collation (optional)
 	 */
-	function set_charset($dbh, $charset = null, $collate = null) {
-		if ( ! isset( $charset ) )
+	function set_charset( $dbh, $charset = null, $collate = null ) {
+		if ( ! isset( $charset ) ) {
 			$charset = $this->charset;
-		if ( ! isset( $collate ) )
+		}
+
+		if ( ! isset( $collate ) ) {
 			$collate = $this->collate;
-		if ( $this->has_cap( 'collation', $dbh ) && !empty( $charset ) ) {
-			$query = $this->prepare( 'SET NAMES %s', $charset );
-			if ( ! empty( $collate ) )
-				$query .= $this->prepare( ' COLLATE %s', $collate );
-			$this->dbh->query( $query );
+		}
+
+		if ( ! $dbh->set_charset( $charset, $collate ) ) {
+			if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
+				$query = $this->prepare( 'SET NAMES %s', $charset );
+
+				if ( ! empty( $collate ) ) {
+					$query .= $this->prepare( ' COLLATE %s', $collate );
+				}
+
+				$this->query( $query );
+			}
 		}
 	}
 
