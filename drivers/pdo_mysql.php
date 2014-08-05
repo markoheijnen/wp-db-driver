@@ -9,7 +9,7 @@
  * @subpackage Database
  * @since 3.6.0
  */
-class wpdb_driver_pdo_mysql implements wpdb_driver {
+class wpdb_driver_pdo_mysql extends wpdb_driver {
 
 	/**
 	 * Database link

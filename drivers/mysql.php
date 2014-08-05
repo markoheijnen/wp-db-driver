@@ -9,7 +9,7 @@
  * @subpackage Database
  * @since 3.6.0
  */
-class wpdb_driver_mysql implements wpdb_driver {
+class wpdb_driver_mysql extends wpdb_driver {
 
 	/**
 	 * Database link
@@ -54,6 +54,7 @@ class wpdb_driver_mysql implements wpdb_driver {
 		if ( is_resource( $this->result ) ) {
 			mysql_free_result( $this->result );
 		}
+
 		$this->result = null;
 		$this->col_info = null;
 	}
@@ -75,8 +76,7 @@ class wpdb_driver_mysql implements wpdb_driver {
 	 * @return bool
 	 */
 	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
-
-		$new_link = defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true;
+		$new_link     = defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true;
 		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
 
 		if ( WP_DEBUG ) {
@@ -84,6 +84,7 @@ class wpdb_driver_mysql implements wpdb_driver {
 		} else {
 			$this->dbh = @mysql_connect( "$host:$port", $user, $pass, $new_link, $client_flags );
 		}
+
 		return ( false !== $this->dbh );
 	}
 

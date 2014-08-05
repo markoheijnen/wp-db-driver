@@ -1892,19 +1892,8 @@ class wpdb_drivers {
 	 * @param string $db_cap The feature to check for.
 	 * @return bool
 	 */
-	function has_cap( $db_cap ) {
-		$version = $this->db_version();
-
-		switch ( strtolower( $db_cap ) ) {
-			case 'collation' :    // @since 2.5.0
-			case 'group_concat' : // @since 2.7.0
-			case 'subqueries' :   // @since 2.7.0
-				return version_compare( $version, '4.1', '>=' );
-			case 'set_charset' :
-				return version_compare( $version, '5.0.7', '>=' );
-		};
-
-		return false;
+	public function has_cap( $db_cap ) {
+		return $this->dbh->has_cap( $db_cap );
 	}
 
 	/**
@@ -1931,6 +1920,7 @@ class wpdb_drivers {
 	function db_version() {
 		return $this->dbh->db_version();
 	}
+
 }
 
 $wpdb = new wpdb_drivers( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
