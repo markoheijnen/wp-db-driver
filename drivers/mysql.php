@@ -31,8 +31,11 @@ class wpdb_driver_mysql extends wpdb_driver {
 
 	/**
 	 * Escape with mysql_real_escape_string()
-	 * @param  string $string
-	 * @return string
+	 *
+	 * @see mysql_real_escape_string()
+	 *
+	 * @param  string $string to escape
+	 * @return string escaped
 	 */
 	public function escape( $string ) {
 		return mysql_real_escape_string( $string, $this->dbh );
@@ -40,6 +43,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 
 	/**
 	 * Get the latest error message from the DB driver
+	 *
 	 * @return string
 	 */
 	public function get_error_message() {
@@ -48,6 +52,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 
 	/**
 	 * Free memory associated with the resultset
+	 *
 	 * @return void
 	 */
 	public function flush() {

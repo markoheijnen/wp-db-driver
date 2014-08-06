@@ -39,8 +39,11 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 
 	/**
 	 * Escape with mysql_real_escape_string()
-	 * @param  string $string
-	 * @return string
+	 *
+	 * @see PDO::quote()
+	 *
+	 * @param  string $string to escape
+	 * @return string escaped
 	 */
 	public function escape( $string ) {
 		return substr( $this->dbh->quote( $string ), 1, -1 );
@@ -48,6 +51,7 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 
 	/**
 	 * Get the latest error message from the DB driver
+	 *
 	 * @return string
 	 */
 	public function get_error_message() {
@@ -60,6 +64,7 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 
 	/**
 	 * Free memory associated with the resultset
+	 *
 	 * @return void
 	 */
 	public function flush() {
