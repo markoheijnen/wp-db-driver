@@ -890,7 +890,6 @@ class wpdb_drivers {
 				break;
 			default :
 				return array();
-				break;
 		}
 
 		if ( $prefix ) {
@@ -1410,7 +1409,6 @@ class wpdb_drivers {
 		 */
 		$query = apply_filters( 'query', $query );
 
-		$return_val = 0;
 		$this->flush();
 
 		// Log how the function was called
@@ -1640,10 +1638,11 @@ class wpdb_drivers {
 	 * @return int|false The number of rows updated, or false on error.
 	 */
 	function delete( $table, $where, $where_format = null ) {
-		if ( ! is_array( $where ) )
+		if ( ! is_array( $where ) ) {
 			return false;
+		}
 
-		$bits = $wheres = array();
+		$wheres = array();
 
 		$where_formats = $where_format = (array) $where_format;
 
