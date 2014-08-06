@@ -75,11 +75,34 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	 * @return bool
 	 */
 	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
-		if( '.sock' === substr( $port, -5 ) ) {
-			$this->dbh = new mysqli( $host, $user, $pass, '', 3306, $port );
+		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
+
+		$this->dbh = mysqli_init();
+
+		$socket = null;
+		$port_or_socket = strstr( $host, ':' );
+			
+		if ( ! empty( $port_or_socket ) ) {
+			$host = substr( $host, 0, strpos( $host, ':' ) );
+			$port_or_socket = substr( $port_or_socket, 1 );
+
+			if ( 0 !== strpos( $port_or_socket, '/' ) ) {
+				$port = intval( $port_or_socket );
+				$maybe_socket = strstr( $port_or_socket, ':' );
+
+				if ( ! empty( $maybe_socket ) ) {
+					$socket = substr( $maybe_socket, 1 );
+				}
+			} else {
+				$socket = $port_or_socket;
+				$port = null;
+			}
 		}
-		else {
-			$this->dbh = new mysqli( $host, $user, $pass, '', $port );
+
+		if ( WP_DEBUG ) {
+			$this->dbh->real_connect( $host, $user, $pass, null, $port, $socket, $client_flags );
+		} else {
+			@$this->dbh->real_connect( $host, $user, $pass, null, $port, $socket, $client_flags );
 		}
 
 		if ( ! empty( $options['key'] ) && ! empty( $options['cert'] ) && ! empty( $options['ca'] ) ) {
