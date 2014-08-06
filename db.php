@@ -519,7 +519,7 @@ class wpdb_drivers {
 		}
 		else {
 			wp_load_translations_early();
-			die( __( 'Your PHP installation appears to be missing the MySQL extension which is required by WordPress.' ) 
+			die( __( 'Your PHP installation appears to be missing the MySQL extension which is required by WordPress.' ) );
 		}
 
 		// Get the new driver
