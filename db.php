@@ -515,6 +515,10 @@ class wpdb_drivers {
 		} elseif ( extension_loaded( 'mysql' ) ) {
 			$driver = 'mysql';
 		}
+		else {
+			wp_load_translations_early();
+			die( __( 'Your PHP installation appears to be missing the MySQL extension which is required by WordPress.' ) 
+		}
 
 		// Get the new driver
 		if ( in_array( $driver, array( 'mysql', 'mysqli', 'pdo_mysql' ) ) ) {
@@ -522,7 +526,7 @@ class wpdb_drivers {
 		}
 		$class = 'wpdb_driver_' . $driver;
 
-		if ( !class_exists( $class ) ) {
+		if ( ! class_exists( $class ) ) {
 			wp_load_translations_early();
 
 			// Load custom DB error template, if present.
