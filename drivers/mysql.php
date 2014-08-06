@@ -198,11 +198,14 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 * @return array
 	 */
 	public function load_col_info() {
-		if ( $this->col_info )
+		if ( $this->col_info ) {
 			return $this->col_info;
+		}
+
 		for ( $i = 0; $i < @mysql_num_fields( $this->result ); $i++ ) {
 			$this->col_info[ $i ] = @mysql_fetch_field( $this->result, $i );
 		}
+
 		return $this->col_info;
 	}
 
