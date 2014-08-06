@@ -508,7 +508,7 @@ class wpdb_drivers {
 		// Auto-pick the driver
 		if ( defined( 'WPDB_DRIVER' ) ) {
 			$driver = WPDB_DRIVER;
-		} elseif ( defined( 'USE_EXT_MYSQL' ) && USE_EXT_MYSQL ) {
+		} elseif ( defined( 'WP_USE_EXT_MYSQL' ) && WP_USE_EXT_MYSQL ) {
 			$driver = 'mysql';
 		} elseif ( extension_loaded( 'pdo_mysql' ) ) {
 			$driver = 'pdo_mysql';
