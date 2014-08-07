@@ -2,7 +2,7 @@
 Contributors: markoheijnen, kurtpayne
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
-Tested up to: 3.9.2
+Tested up to: 4.0
 Stable tag: 1.9
 License: GPLv2 or later
 
@@ -76,7 +76,7 @@ Added emergency override
 
 == Changelog ==
 
-= 1.8  =
+= 1.8 (2014-08-7) =
 * Synced with trunk to Changeset 29165 excluding 27075
  * Ensure compatibility with MySQL 5.6 which has stricter SQL modes by default
  * Throw an incorrect usage notice when the query argument of wpdb::prepare() does not include a placeholder.
