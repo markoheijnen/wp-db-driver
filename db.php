@@ -1333,11 +1333,11 @@ class wpdb_drivers {
 			return false;
 		}
 		else if ( $is_connected ) { 
+			$this->ready = true;
+
 			$this->set_charset( $this->dbh );
 
 			$this->set_sql_mode();
-
-			$this->ready = true;
 
 			$this->select( $this->dbname, $this->dbh );
 
