@@ -3,7 +3,7 @@ Contributors: markoheijnen, kurtpayne
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
 Tested up to: 4.0
-Stable tag: 1.9
+Stable tag: 1.8.1
 License: GPLv2 or later
 
 An improved database layer for WordPress
@@ -76,7 +76,10 @@ Added emergency override
 
 == Changelog ==
 
-= 1.8 (2014-08-7) =
+= 1.8.1 (2014-08-08) =
+* Fix setting charset and SQL mode for PDO
+
+= 1.8 (2014-08-07) =
 * Synced with trunk to Changeset 29165 excluding 27075
  * Ensure compatibility with MySQL 5.6 which has stricter SQL modes by default
  * Throw an incorrect usage notice when the query argument of wpdb::prepare() does not include a placeholder.

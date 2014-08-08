@@ -5,7 +5,7 @@
 	Description: Enables PDO or MySQLi
 	Author:      Marko Heijnen and Kurt Payne
 	Text Domain: wp-db-driver
-	Version:     1.8
+	Version:     1.8.1
 	Author URI:  http://core.trac.wordpress.org/ticket/21663
 	Network:     True
 */
