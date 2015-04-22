@@ -1149,10 +1149,8 @@ class wpdb_drivers {
 	 *
 	 * Both %d and %s should be left unquoted in the query string.
 	 *
-	 * <code>
-	 * wpdb::prepare( "SELECT * FROM `table` WHERE `column` = %s AND `field` = %d", 'foo', 1337 )
-	 * wpdb::prepare( "SELECT DATE_FORMAT(`field`, '%%c') FROM `table` WHERE `column` = %s", 'foo' );
-	 * </code>
+	 *     wpdb::prepare( "SELECT * FROM `table` WHERE `column` = %s AND `field` = %d", 'foo', 1337 )
+	 *     wpdb::prepare( "SELECT DATE_FORMAT(`field`, '%%c') FROM `table` WHERE `column` = %s", 'foo' );
 	 *
 	 * @link http://php.net/sprintf Description of syntax.
 	 * @since 2.3.0
@@ -1596,10 +1594,8 @@ class wpdb_drivers {
 	/**
 	 * Insert a row into a table.
 	 *
-	 * <code>
-	 * wpdb::insert( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
-	 * wpdb::insert( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
-	 * </code>
+	 *     wpdb::insert( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
+	 *     wpdb::insert( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
 	 *
 	 * @since 2.5.0
 	 * @see wpdb::prepare()
@@ -1619,10 +1615,8 @@ class wpdb_drivers {
 	/**
 	 * Replace a row into a table.
 	 *
-	 * <code>
-	 * wpdb::replace( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
-	 * wpdb::replace( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
-	 * </code>
+	 *     wpdb::replace( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
+	 *     wpdb::replace( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
 	 *
 	 * @since 3.0.0
 	 * @see wpdb::prepare()
@@ -1687,10 +1681,8 @@ class wpdb_drivers {
 	/**
 	 * Update a row in the table
 	 *
-	 * <code>
-	 * wpdb::update( 'table', array( 'column' => 'foo', 'field' => 'bar' ), array( 'ID' => 1 ) )
-	 * wpdb::update( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( 'ID' => 1 ), array( '%s', '%d' ), array( '%d' ) )
-	 * </code>
+	 *     wpdb::update( 'table', array( 'column' => 'foo', 'field' => 'bar' ), array( 'ID' => 1 ) )
+	 *     wpdb::update( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( 'ID' => 1 ), array( '%s', '%d' ), array( '%d' ) )
 	 *
 	 * @since 2.5.0
 	 * @see wpdb::prepare()
@@ -1745,10 +1737,8 @@ class wpdb_drivers {
 	/**
 	 * Delete a row in the table
 	 *
-	 * <code>
-	 * wpdb::delete( 'table', array( 'ID' => 1 ) )
-	 * wpdb::delete( 'table', array( 'ID' => 1 ), array( '%d' ) )
-	 * </code>
+	 *     wpdb::delete( 'table', array( 'ID' => 1 ) )
+	 *     wpdb::delete( 'table', array( 'ID' => 1 ), array( '%d' ) )
 	 *
 	 * @since 3.4.0
 	 * @see wpdb::prepare()
