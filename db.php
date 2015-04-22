@@ -781,8 +781,6 @@ class wpdb_drivers {
 		 *
 		 * @since 3.9.0
 		 *
-		 * @see wpdb::$incompatible_modes
-		 *
 		 * @param array $incompatible_modes An array of incompatible modes.
 		 */
 		$incompatible_modes = (array) apply_filters( 'incompatible_sql_modes', $this->incompatible_modes );
