@@ -60,13 +60,18 @@ class wpdb_driver_mysqli extends wpdb_driver {
 			$this->result->free_result();
 		}
 
+		$this->result = null;
+		$this->col_info = null;
+
+		// Sanity check before using the handle
+		if ( empty( $this->dbh ) || ! ( $this->dbh instanceof mysqli ) ) {
+			return;
+		}
+
 		// Clear out any results from a multi-query
 		while ( mysqli_more_results( $this->dbh ) ) {
 			mysqli_next_result( $this->dbh );
 		}
-
-		$this->result = null;
-		$this->col_info = null;
 	}
 
 	/**
