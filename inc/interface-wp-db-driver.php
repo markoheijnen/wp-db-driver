@@ -36,6 +36,8 @@ abstract class wpdb_driver {
 				return version_compare( $version, '4.1', '>=' );
 			case 'set_charset' :
 				return version_compare( $version, '5.0.7', '>=' );
+			case 'utf8mb4' :      // @since 4.1.0
+				return version_compare( $version, '5.5.3', '>=' );
 		}
 
 		return false;
