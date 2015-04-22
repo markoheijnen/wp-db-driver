@@ -612,10 +612,11 @@ class wpdb_drivers {
 	 * @return mixed The private member
 	 */
 	public function __get( $name ) {
-		if ( 'col_info' == $name )
+		if ( 'col_info' === $name ) {
 			$this->load_col_info();
+		}
 
-		if( isset( $this->$name ) ) {
+		if ( isset( $this->$name ) ) {
 			return $this->$name;
 		}
 
