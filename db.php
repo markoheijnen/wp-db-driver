@@ -1902,7 +1902,6 @@ class wpdb_drivers {
 		$this->func_call = "\$db->get_var(\"$query\", $x, $y)";
 
 		if ( $query ) {
-			$this->check_current_query = false;
 			$this->query( $query );
 		}
 
@@ -1932,7 +1931,6 @@ class wpdb_drivers {
 		$this->func_call = "\$db->get_row(\"$query\",$output,$y)";
 
 		if ( $query ) {
-			$this->check_current_query = false;
 			$this->query( $query );
 		}
 		else {
@@ -1972,7 +1970,6 @@ class wpdb_drivers {
 	 */
 	public function get_col( $query = null , $x = 0 ) {
 		if ( $query ) {
-			$this->check_current_query = false;
 			$this->query( $query );
 		}
 
@@ -2002,7 +1999,6 @@ class wpdb_drivers {
 		$this->func_call = "\$db->get_results(\"$query\", $output)";
 
 		if ( $query ) {
-			$this->check_current_query = false;
 			$this->query( $query );
 		}
 		else {
