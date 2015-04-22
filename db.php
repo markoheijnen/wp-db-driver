@@ -829,20 +829,24 @@ class wpdb_drivers {
 	/**
 	 * Gets blog prefix.
 	 *
-	 * @uses is_multisite()
 	 * @since 3.0.0
 	 * @param int $blog_id Optional.
 	 * @return string Blog prefix.
 	 */
 	public function get_blog_prefix( $blog_id = null ) {
 		if ( is_multisite() ) {
-			if ( null === $blog_id )
+			if ( null === $blog_id ) {
 				$blog_id = $this->blogid;
+			}
+
 			$blog_id = (int) $blog_id;
-			if ( defined( 'MULTISITE' ) && ( 0 == $blog_id || 1 == $blog_id ) )
+
+			if ( defined( 'MULTISITE' ) && ( 0 == $blog_id || 1 == $blog_id ) ) {
 				return $this->base_prefix;
-			else
+			}
+			else {
 				return $this->base_prefix . $blog_id . '_';
+			}
 		} else {
 			return $this->base_prefix;
 		}
@@ -868,7 +872,6 @@ class wpdb_drivers {
 	 * @uses wpdb::$old_tables
 	 * @uses wpdb::$global_tables
 	 * @uses wpdb::$ms_global_tables
-	 * @uses is_multisite()
 	 *
 	 * @param string $scope Optional. Can be all, global, ms_global, blog, or old tables. Defaults to all.
 	 * @param bool $prefix Optional. Whether to include table prefixes. Default true. If blog
@@ -880,16 +883,20 @@ class wpdb_drivers {
 		switch ( $scope ) {
 			case 'all' :
 				$tables = array_merge( $this->global_tables, $this->tables );
-				if ( is_multisite() )
+
+				if ( is_multisite() ) {
 					$tables = array_merge( $tables, $this->ms_global_tables );
+				}
 				break;
 			case 'blog' :
 				$tables = $this->tables;
 				break;
 			case 'global' :
 				$tables = $this->global_tables;
-				if ( is_multisite() )
+
+				if ( is_multisite() ) {
 					$tables = array_merge( $tables, $this->ms_global_tables );
+				}
 				break;
 			case 'ms_global' :
 				$tables = $this->ms_global_tables;
@@ -902,24 +909,32 @@ class wpdb_drivers {
 		}
 
 		if ( $prefix ) {
-			if ( ! $blog_id )
+			if ( ! $blog_id ) {
 				$blog_id = $this->blogid;
+			}
+
 			$blog_prefix = $this->get_blog_prefix( $blog_id );
 			$base_prefix = $this->base_prefix;
 			$global_tables = array_merge( $this->global_tables, $this->ms_global_tables );
+
 			foreach ( $tables as $k => $table ) {
-				if ( in_array( $table, $global_tables ) )
+				if ( in_array( $table, $global_tables ) ) {
 					$tables[ $table ] = $base_prefix . $table;
-				else
+				}
+				else {
 					$tables[ $table ] = $blog_prefix . $table;
+				}
+
 				unset( $tables[ $k ] );
 			}
 
-			if ( isset( $tables['users'] ) && defined( 'CUSTOM_USER_TABLE' ) )
+			if ( isset( $tables['users'] ) && defined( 'CUSTOM_USER_TABLE' ) ) {
 				$tables['users'] = CUSTOM_USER_TABLE;
+			}
 
-			if ( isset( $tables['usermeta'] ) && defined( 'CUSTOM_USER_META_TABLE' ) )
+			if ( isset( $tables['usermeta'] ) && defined( 'CUSTOM_USER_META_TABLE' ) ) {
 				$tables['usermeta'] = CUSTOM_USER_META_TABLE;
+			}
 		}
 
 		return $tables;
@@ -1000,7 +1015,13 @@ class wpdb_drivers {
 		}
 
 		$class = get_class( $this );
-		_doing_it_wrong( $class, "$class must set a database connection for use with escaping.", E_USER_NOTICE );
+
+		if ( function_exists( '__' ) ) {
+			_doing_it_wrong( $class, sprintf( __( '%s must set a database connection for use with escaping.' ), $class ), E_USER_NOTICE );
+		} else {
+			_doing_it_wrong( $class, sprintf( '%s must set a database connection for use with escaping.', $class ), E_USER_NOTICE );
+		}
+
 		return addslashes( $string );
 	}
 
