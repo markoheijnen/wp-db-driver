@@ -1387,7 +1387,7 @@ class wpdb_drivers {
 
 			return false;
 		}
-		else if ( $is_connected ) { 
+		elseif ( $is_connected ) { 
 			$this->ready = true;
 
 			$this->set_charset( $this->dbh );
