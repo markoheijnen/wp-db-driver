@@ -59,6 +59,12 @@ class wpdb_driver_mysqli extends wpdb_driver {
 		if ( $this->result instanceof mysqli_stmt ) {
 			$this->result->free_result();
 		}
+
+		// Clear out any results from a multi-query
+		while ( mysqli_more_results( $this->dbh ) ) {
+			mysqli_next_result( $this->dbh );
+		}
+
 		$this->result = null;
 		$this->col_info = null;
 	}
