@@ -842,7 +842,7 @@ class wpdb_drivers {
 	 * @access public
 	 * @param int $blog_id
 	 * @param int $site_id Optional.
-	 * @return string previous blog id
+	 * @return int previous blog id
 	 */
 	public function set_blog_id( $blog_id, $site_id = 0 ) {
 		if ( ! empty( $site_id ) )
@@ -1219,7 +1219,7 @@ class wpdb_drivers {
 	 * @global array $EZSQL_ERROR Stores error information of query and error string
 	 *
 	 * @param string $str The error to display
-	 * @return bool False if the showing of errors is disabled.
+	 * @return false|null False if the showing of errors is disabled.
 	 */
 	public function print_error( $str = '' ) {
 		global $EZSQL_ERROR;
@@ -1343,7 +1343,7 @@ class wpdb_drivers {
 	 *
 	 * @param bool $allow_bail Optional. Allows the function to bail. Default true.
 	 *
-	 * @return bool True with a successful connection, false on failure. 
+	 * @return null|bool True with a successful connection, false on failure. 
 	 */
 	public function db_connect( $allow_bail = true ) {
 		$this->is_mysql = true;
@@ -1415,7 +1415,7 @@ class wpdb_drivers {
 	 *
 	 * @param bool $allow_bail Optional. Allows the function to bail. Default true.
 	 * 
-	 * @return bool True if the connection is up.
+	 * @return bool|null True if the connection is up.
 	 */
 	public function check_connection( $allow_bail = true ) {
 		if ( $this->dbh->ping() ) {
@@ -2567,7 +2567,7 @@ class wpdb_drivers {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @return true
+	 * @return bool
 	 */
 	public function timer_start() {
 		$this->time_start = microtime( true );
@@ -2689,7 +2689,7 @@ class wpdb_drivers {
 	 *
 	 * @since 2.7.0
 	 *
-	 * @return false|string false on failure, version number on success
+	 * @return null|string Null on failure, version number on success.
 	 */
 	public function db_version() {
 		return $this->dbh->db_version();
