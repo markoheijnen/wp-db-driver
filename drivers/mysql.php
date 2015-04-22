@@ -105,8 +105,8 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 * Sets the connection's character set.
 	 *
 	 * @param resource $dbh     The resource given by the driver
-	 * @param string   $charset The character set (optional)
-	 * @param string   $collate The collation (optional)
+	 * @param string   $charset Optional. The character set. Default null.
+	 * @param string   $collate Optional. The collation. Default null.
 	 */
 	public function set_charset( $charset = null, $collate = null ) {
 		if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {

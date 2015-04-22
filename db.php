@@ -722,8 +722,8 @@ class wpdb_drivers {
 	 * @since 3.1.0
 	 *
 	 * @param resource $dbh     The resource given by the driver
-	 * @param string   $charset The character set (optional)
-	 * @param string   $collate The collation (optional)
+	 * @param string   $charset Optional. The character set. Default null.
+	 * @param string   $collate Optional. The collation. Default null.
 	 */
 	public function set_charset( $dbh, $charset = null, $collate = null ) {
 		if ( ! isset( $charset ) ) {
