@@ -2077,7 +2077,7 @@ class wpdb_drivers {
 	 * @access protected
 	 *
 	 * @param string $table Table name.
-	 * @return string|WP_Error Table character set, {@see WP_Error} object if it couldn't be found.
+	 * @return string|WP_Error Table character set, WP_Error object if it couldn't be found.
 	 */
 	protected function get_table_charset( $table ) {
 		$tablekey = strtolower( $table );
@@ -2174,7 +2174,7 @@ class wpdb_drivers {
 	 * @param string $table  Table name.
 	 * @param string $column Column name.
 	 * @return mixed Column character set as a string. False if the column has no
-	 *               character set. {@see WP_Error} object if there was an error.
+	 *               character set. WP_Error object if there was an error.
 	 */
 	public function get_col_charset( $table, $column ) {
 		$tablekey  = strtolower( $table );
@@ -2268,7 +2268,7 @@ class wpdb_drivers {
 	 * @return array|WP_Error The $data parameter, with invalid characters removed from
 	 *                        each value. This works as a passthrough: any additional keys
 	 *                        such as 'field' are retained in each value array. If we cannot
-	 *                        remove invalid characters, a {@see WP_Error} object is returned.
+	 *                        remove invalid characters, a WP_Error object is returned.
 	 */
 	protected function strip_invalid_text( $data ) {
 		// Some multibyte character sets that we can check in PHP.
@@ -2406,7 +2406,7 @@ class wpdb_drivers {
 	 * @access protected
 	 *
 	 * @param string $query Query to convert.
-	 * @return string|WP_Error The converted query, or a {@see WP_Error} object if the conversion fails.
+	 * @return string|WP_Error The converted query, or a WP_Error object if the conversion fails.
 	 */
 	protected function strip_invalid_text_from_query( $query ) {
 		$table = $this->get_table_from_query( $query );
