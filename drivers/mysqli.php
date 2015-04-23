@@ -265,4 +265,21 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	public function db_version() {
 		return preg_replace( '/[^0-9.].*/', '', $this->dbh->server_version );
 	}
+
+
+	/**
+	 * Determine if a database supports a particular feature.
+	 */
+	public function has_cap( $db_cap ) {
+		$db_cap = strtolower( $db_cap );
+
+		$version = parent::has_cap( $db_cap );
+
+		if ( $version && 'utf8mb4' === $db_cap ) {
+			return version_compare( mysqli_get_client_info(), '5.5.3', '>=' );
+		}
+
+		return $version;
+	}
+
 }

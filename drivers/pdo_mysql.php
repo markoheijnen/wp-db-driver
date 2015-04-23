@@ -266,6 +266,23 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 		return preg_replace( '/[^0-9.].*/', '', $this->dbh->getAttribute( PDO::ATTR_SERVER_VERSION ) );
 	}
 
+
+	/**
+	 * Determine if a database supports a particular feature.
+	 */
+	public function has_cap( $db_cap ) {
+		$db_cap = strtolower( $db_cap );
+
+		$version = parent::has_cap( $db_cap );
+
+		if ( $version && 'utf8mb4' === $db_cap ) {
+			return version_compare( $this->dbh->getAttribute( PDO::ATTR_CLIENT_VERSION ), '5.5.3', '>=' );
+		}
+
+		return $version;
+	}
+
+
 	/**
 	 * Don't save any state.  The db wrapper should call connect() again.
 	 * @return array
