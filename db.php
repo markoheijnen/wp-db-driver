@@ -124,6 +124,16 @@ class wpdb_drivers {
 	 */
 	protected $check_current_query = true;
 
+ 	/** 
+	 * Flag to ensure we don't run into recursion problems when checking the collation. 
+	 * 
+	 * @since 4.2.0 
+	 * @access private 
+	 * @see wpdb::check_safe_collation() 
+	 * @var boolean 
+	 */ 
+	private $checking_collation = false; 
+
 	/**
 	 * Saved info on the table column
 	 *
@@ -1927,6 +1937,10 @@ class wpdb_drivers {
 	public function get_var( $query = null, $x = 0, $y = 0 ) {
 		$this->func_call = "\$db->get_var(\"$query\", $x, $y)";
 
+		if ( $this->check_safe_collation( $query ) ) {
+			$this->check_current_query = false;
+		}
+
 		if ( $query ) {
 			$this->query( $query );
 		}
@@ -1955,6 +1969,10 @@ class wpdb_drivers {
 	 */
 	public function get_row( $query = null, $output = OBJECT, $y = 0 ) {
 		$this->func_call = "\$db->get_row(\"$query\",$output,$y)";
+
+		if ( $this->check_safe_collation( $query ) ) {
+			$this->check_current_query = false;
+		}
 
 		if ( $query ) {
 			$this->query( $query );
@@ -1995,6 +2013,10 @@ class wpdb_drivers {
 	 * @return array Database query result. Array indexed from 0 by SQL result row number.
 	 */
 	public function get_col( $query = null , $x = 0 ) {
+		if ( $this->check_safe_collation( $query ) ) {
+			$this->check_current_query = false;
+		}
+
 		if ( $query ) {
 			$this->query( $query );
 		}
@@ -2023,6 +2045,10 @@ class wpdb_drivers {
 	 */
 	public function get_results( $query = null, $output = OBJECT ) {
 		$this->func_call = "\$db->get_results(\"$query\", $output)";
+
+		if ( $this->check_safe_collation( $query ) ) {
+			$this->check_current_query = false;
+		}
 
 		if ( $query ) {
 			$this->query( $query );
@@ -2261,6 +2287,49 @@ class wpdb_drivers {
 
 		return false;
 	}
+
+    /** 
+	 * Check if the query is accessing a collation considered safe on the current version of MySQL. 
+	 * 
+	 * @since 4.2.0 
+	 * @access protected 
+	 * 
+	 * @param string $query The query to check. 
+	 * @return bool True if the collation is safe, false if it isn't. 
+	 */ 
+	protected function check_safe_collation( $query ) { 
+		if ( $this->checking_collation ) { 
+			return true; 
+		} 
+
+		$table = $this->get_table_from_query( $query );
+
+		if ( ! $table ) {
+			return false;
+		}
+
+		$this->checking_collation = true; 
+		$this->get_table_charset( $table ); 
+		$this->checking_collation = false; 
+
+		$table = strtolower( $table ); 
+
+		if ( empty( $this->col_meta[ $table ] ) ) {
+			return false;
+		}
+
+		foreach ( $this->col_meta[ $table ] as $col ) {
+			if ( empty( $col->Collation ) ) {
+				continue;
+			}
+
+			if ( ! in_array( $col->Collation, array( 'utf8_general_ci', 'utf8_bin', 'utf8mb4_general_ci', 'utf8mb4_bin' ), true ) ) { 
+				return false; 
+			} 
+		} 
+
+		return true; 
+	} 
 
 	/**
 	 * Strips any invalid characters based on value/charset pairs.
