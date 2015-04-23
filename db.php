@@ -527,6 +527,14 @@ class wpdb_drivers {
 	protected $incompatible_modes = array( 'NO_ZERO_DATE', 'ONLY_FULL_GROUP_BY',
 		'STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL' );
 
+	/**
+	 * Whether we've managed to successfully connect at some point
+	 *
+	 * @since 3.9.0
+	 * @access private
+	 * @var bool
+	 */
+	private $has_connected = false;
 
  	/**
 	 * Pick the adapter to be used for performing the actual queries.
@@ -597,10 +605,9 @@ class wpdb_drivers {
 
 		register_shutdown_function( array( $this, '__destruct' ) );
 
-		if ( WP_DEBUG && WP_DEBUG_DISPLAY )
+		if ( WP_DEBUG && WP_DEBUG_DISPLAY ) {
 			$this->show_errors();
-
-		$this->init_charset();
+		}
 
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpassword;
@@ -704,16 +711,31 @@ class wpdb_drivers {
 	public function init_charset() {
 		if ( function_exists('is_multisite') && is_multisite() ) {
 			$this->charset = 'utf8';
-			if ( defined( 'DB_COLLATE' ) && DB_COLLATE )
+			if ( defined( 'DB_COLLATE' ) && DB_COLLATE ) {
 				$this->collate = DB_COLLATE;
-			else
+			}
+			else {
 				$this->collate = 'utf8_general_ci';
+			}
 		} elseif ( defined( 'DB_COLLATE' ) ) {
 			$this->collate = DB_COLLATE;
 		}
 
-		if ( defined( 'DB_CHARSET' ) )
+		if ( defined( 'DB_CHARSET' ) ) {
 			$this->charset = DB_CHARSET;
+		}
+
+		if ( ! $this->dbh || ! $this->dbh->is_connected() ) {
+			return;
+		}
+
+		if ( 'utf8' === $this->charset && $this->has_cap( 'utf8mb4' ) ) {
+			$this->charset = 'utf8mb4';
+		}
+
+		if ( 'utf8mb4' === $this->charset && ( ! $this->collate || stripos( $this->collate, 'utf8_' ) === 0 ) ) {
+			$this->collate = 'utf8mb4_unicode_ci';
+		}
 	}
 
 	/**
@@ -1387,13 +1409,17 @@ class wpdb_drivers {
 
 			return false;
 		}
-		elseif ( $is_connected ) { 
-			$this->ready = true;
+		elseif ( $is_connected ) {
+			if ( ! $this->has_connected ) { 
+				$this->init_charset(); 
+			}
+
+			$this->has_connected = true;
 
 			$this->set_charset( $this->dbh );
 
+			$this->ready = true;
 			$this->set_sql_mode();
-
 			$this->select( $this->dbname, $this->dbh );
 
 			return true;
