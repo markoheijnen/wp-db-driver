@@ -12,13 +12,14 @@ DB_NAME=$1
 DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
-WP_VERSION=${5-latest}
+WP_VERSION=${5-master}
 
 WP_CORE_DIR=/tmp/wordpress/
 
 set -ex
 
 install_wp() {
+	rm -Rf $WP_CORE_DIR
 	mkdir -p $WP_CORE_DIR
 
 	git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_CORE_DIR
@@ -35,6 +36,7 @@ install_test_suite() {
 	# set up testing suite
 	cd $WP_CORE_DIR
 
+	cp wp-tests-config-sample.php wp-tests-config.php
 	sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" wp-tests-config.php
 	sed $ioption "s/yourusernamehere/$DB_USER/" wp-tests-config.php
 	sed $ioption "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
