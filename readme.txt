@@ -2,7 +2,7 @@
 Contributors: markoheijnen, kurtpayne
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 3.6
-Tested up to: 4.0
+Tested up to: 4.2
 Stable tag: 1.8.1
 License: GPLv2 or later
 
@@ -75,6 +75,9 @@ For more information see:
 Added emergency override
 
 == Changelog ==
+
+= 1.9 (2015-04-23) =
+* Sync to changeset 32261
 
 = 1.8.1 (2014-08-08) =
 * Fix setting charset and SQL mode for PDO
