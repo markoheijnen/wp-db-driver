@@ -76,6 +76,12 @@ Added emergency override
 
 == Changelog ==
 
+= 1.9.2 (2015-04-27) =
+* Sync with 4.2.1
+
+= 1.9.1 (2015-04-23) =
+* Fix setting charset and SQL mode for PDO
+
 = 1.9 (2015-04-23) =
 * Sync to changeset 32261
 
