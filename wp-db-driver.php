@@ -5,7 +5,7 @@
 	Description: Enables PDO or MySQLi
 	Author:      Marko Heijnen and Kurt Payne
 	Text Domain: wp-db-driver
-	Version:     1.8.1
+	Version:     1.9
 	Author URI:  http://core.trac.wordpress.org/ticket/21663
 	Network:     True
 */
@@ -18,7 +18,7 @@ class WP_DB_Driver_Plugin {
 
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
-		add_action('network_admin_menu', array( $this, 'add_page' ) );
+		add_action( 'network_admin_menu', array( $this, 'add_page' ) );
 
 		add_action( 'admin_init', array( $this, 'remove_emergency_cookie' ) );
 	}
@@ -38,7 +38,7 @@ class WP_DB_Driver_Plugin {
 	 * WP_Filesystem, because it's not available.
 	 */
 	public static function deactivate() {
-		if( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 			$crc1 = md5_file( dirname( __FILE__ ) . '/wp-content/db.php' );
 			$crc2 = md5_file( WP_CONTENT_DIR . '/db.php' );
 
@@ -148,7 +148,7 @@ class WP_DB_Driver_Plugin {
 
 		echo '<div class="tool-box"><h3 class="title">' . __( 'Current driver', 'wp-db-driver' ) . '</h3></div>';
 
-		if( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 			$crc1 = md5_file( dirname( __FILE__ ) . '/wp-content/db.php' );
 			$crc2 = md5_file( WP_CONTENT_DIR . '/db.php' );
 
@@ -259,8 +259,9 @@ class WP_DB_Driver_Plugin {
 
 }
 
-if( is_admin() )
+if ( is_admin() ) {
 	new WP_DB_Driver_Plugin;
+}
 
 register_deactivation_hook( __FILE__, array( 'WP_DB_Driver_Plugin', 'deactivate' ) );
 register_uninstall_hook( __FILE__, array( 'WP_DB_Driver_Plugin', 'uninstall' ) );

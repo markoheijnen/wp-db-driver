@@ -1425,10 +1425,9 @@ class wpdb_drivers {
 			}
 
 			$this->has_connected = true;
+			$this->ready = true;
 
 			$this->set_charset( $this->dbh );
-
-			$this->ready = true;
 			$this->set_sql_mode();
 			$this->select( $this->dbname, $this->dbh );
 
