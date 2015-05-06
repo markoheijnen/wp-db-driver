@@ -2565,7 +2565,7 @@ class wpdb_drivers {
 					';
 				}
 
-				$regex .= '){1,50}                          # ...one or more times
+				$regex .= '){1,40}                          # ...one or more times
 					)
 					| .                                  # anything else
 					/x';
