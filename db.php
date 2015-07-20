@@ -3,7 +3,7 @@
 require( dirname( __FILE__ ) . '/inc/error-handler.php' );
 require( dirname( __FILE__ ) . '/inc/interface-wp-db-driver.php' );
 
-class wpdb_drivers {
+class wpdb_drivers extends wpdb {
 
 	/**
 	 * Whether to show SQL/DB errors
