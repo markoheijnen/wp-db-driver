@@ -38,19 +38,19 @@ class wpdb_drivers extends wpdb {
 	 * Amount of queries made
 	 *
 	 * @since 1.2.0
-	 * @access private
+	 * @access public
 	 * @var int
 	 */
-	var $num_queries = 0;
+	public $num_queries = 0;
 
 	/**
 	 * Count of rows returned by previous query
 	 *
 	 * @since 0.71
-	 * @access private
+	 * @access public
 	 * @var int
 	 */
-	var $num_rows = 0;
+	public $num_rows = 0;
 
 	/**
 	 * Count of affected rows by previous query
@@ -68,7 +68,7 @@ class wpdb_drivers extends wpdb {
 	 * @access public
 	 * @var int
 	 */
-	var $insert_id = 0;
+	public $insert_id = 0;
 
 	/**
 	 * Last query made
@@ -170,10 +170,10 @@ class wpdb_drivers extends wpdb {
 	 * security precautions.
 	 *
 	 * @since 2.5.0
-	 * @access private
+	 * @access public
 	 * @var string
 	 */
-	var $prefix = '';
+	public $prefix = '';
 
  
 	/** 
