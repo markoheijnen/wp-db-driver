@@ -202,7 +202,9 @@ class wpdb_driver_mysql extends wpdb_driver {
 			return $this->col_info;
 		}
 
-		for ( $i = 0; $i < @mysql_num_fields( $this->result ); $i++ ) {
+		$num_fields = @mysql_num_fields( $this->result );
+
+		for ( $i = 0; $i < $num_fields; $i++ ) {
 			$this->col_info[ $i ] = @mysql_fetch_field( $this->result, $i );
 		}
 

@@ -250,11 +250,16 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	 * @return array
 	 */
 	public function load_col_info() {
-		if ( $this->col_info )
+		if ( $this->col_info ) {
 			return $this->col_info;
-		for ( $i = 0; $i < $this->result->columnCount() ; $i++ ) {
+		}
+
+		$num_fields = $this->result->columnCount();
+
+		for ( $i = 0; $i < $num_fields; $i++ ) {
 			$this->col_info[ $i ] = $this->result->fetchColumn( $i );
 		}
+
 		return $this->col_info;
 	}
 

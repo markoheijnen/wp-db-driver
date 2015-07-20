@@ -251,7 +251,9 @@ class wpdb_driver_mysqli extends wpdb_driver {
 			return $this->col_info;
 		}
 
-		for ( $i = 0; $i < $this->result->field_count ; $i++ ) {
+		$num_fields = $this->result->field_count;
+
+		for ( $i = 0; $i < $num_fields; $i++ ) {
 			$this->col_info[ $i ] = $this->result->fetch_field_direct( $i );
 		}
 
