@@ -13,6 +13,8 @@ DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-master}
+WP_MULTISITE=${6-0}
+WPDB_DRIVER=${7-mysql}
 
 WP_CORE_DIR=/tmp/wordpress/
 

@@ -14,7 +14,7 @@ env:
     - WP_VERSION=4.1 WP_MULTISITE=0 WPDB_DRIVER=mysql
 
 before_script:
-    - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+    - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION $WP_MULTISITE $WPDB_DRIVER
 
 script:
     - cd /tmp/wordpress
