@@ -196,22 +196,6 @@ class WP_DB_Driver_Plugin {
 			echo '</form>';
 		}
 
-
-
-		$loaded_pdo = $loaded_mysqli = $loaded_mysql = __( 'Not installed', 'wp-db-driver' );
-
-		if ( extension_loaded( 'pdo_mysql' ) ) {
-			$loaded_pdo = __( 'Installed', 'wp-db-driver' );
-		}
-
-		if ( extension_loaded( 'mysqli' ) ) {
-			$loaded_mysqli = __( 'Installed', 'wp-db-driver' );
-		}
-
-		if ( extension_loaded( 'mysql' ) ) {
-			$loaded_mysql = __( 'Installed', 'wp-db-driver' );
-		}
-
 		echo '<div class="tool-box"><h3 class="title">' . __( 'Supported drivers', 'wp-db-driver' ) . '</h3></div>';
 
 		echo '<table class="form-table">';
