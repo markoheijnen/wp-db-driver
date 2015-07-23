@@ -29,6 +29,12 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 */
 	private $col_info = null;
 
+
+	public static function is_supported() {
+		return extension_loaded( 'mysql' );
+	}
+
+
 	/**
 	 * Escape with mysql_real_escape_string()
 	 *

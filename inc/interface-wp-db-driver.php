@@ -1,6 +1,10 @@
 <?php
 
 abstract class wpdb_driver {
+	public static function is_supported() {
+		return false;
+	}
+
 	public abstract function escape( $string );
 	public abstract function get_error_message();
 	public abstract function flush();

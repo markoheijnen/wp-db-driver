@@ -156,7 +156,7 @@ class WP_DB_Driver_Plugin {
 				echo '<form method="post" style="display: inline;">';
 				wp_nonce_field('uninstall-db-nonce');
 
-				echo '<p><strong>' . $this->get_current_driver() . '</strong> &nbsp; ';
+				echo '<p><strong>' . WP_DB_Driver_Config::get_current_driver() . '</strong> &nbsp; ';
 
 				if ( function_exists( 'mysql' ) && is_super_admin() ) {
 					submit_button( __( 'Remove', 'wp-db-driver' ), 'primary', 'install-db-php', false );
@@ -235,32 +235,10 @@ class WP_DB_Driver_Plugin {
 		echo '</table>';
 	}
 
-	public function get_current_driver() {
-		$driver = false;
-
-		if ( defined( 'WPDB_DRIVER' ) ) {
-			$driver = WPDB_DRIVER;
-		}
-		elseif ( defined( 'WP_USE_EXT_MYSQL' ) && WP_USE_EXT_MYSQL ) {
-			$driver = 'mysql';
-		}
-		elseif ( extension_loaded( 'pdo_mysql' ) ) {
-			$driver = 'PDO';
-		}
-		elseif ( extension_loaded( 'mysqli' ) ) {
-			$driver = 'MySQLi';
-		}
-		elseif ( extension_loaded( 'mysql' ) ) {
-			$driver = 'MySQL';
-		}
-
-		return $driver;
-	}
-
 }
 
 if ( is_admin() ) {
-	new WP_DB_Driver_Plugin;
+	$GLOBAL['wp_db_driver_plugin'] = new WP_DB_Driver_Plugin;
 }
 
 register_deactivation_hook( __FILE__, array( 'WP_DB_Driver_Plugin', 'deactivate' ) );

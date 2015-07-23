@@ -1,5 +1,6 @@
 <?php
 
+require( dirname( __FILE__ ) . '/inc/config.php' );
 require( dirname( __FILE__ ) . '/inc/error-handler.php' );
 require( dirname( __FILE__ ) . '/inc/interface-wp-db-driver.php' );
 
@@ -552,31 +553,10 @@ class wpdb_drivers extends wpdb {
 	 * @since 3.6.0
 	 */
 	private function set_driver() {
+		$driver = WP_DB_Driver_Config::get_current_driver();
 
-		// Auto-pick the driver
-		if ( defined( 'WPDB_DRIVER' ) ) {
-			$driver = WPDB_DRIVER;
-		} elseif ( defined( 'WP_USE_EXT_MYSQL' ) && WP_USE_EXT_MYSQL ) {
-			$driver = 'mysql';
-		} elseif ( extension_loaded( 'pdo_mysql' ) ) {
-			$driver = 'pdo_mysql';
-		} elseif ( extension_loaded( 'mysqli' ) ) {
-			$driver = 'mysqli';
-		} elseif ( extension_loaded( 'mysql' ) ) {
-			$driver = 'mysql';
-		}
-		else {
-			wp_load_translations_early();
-			die( __( 'Your PHP installation appears to be missing the MySQL extension which is required by WordPress.' ) );
-		}
+		if ( ! $driver ) {
 
-		// Get the new driver
-		if ( in_array( $driver, array( 'mysql', 'mysqli', 'pdo_mysql' ) ) ) {
-			require_once( dirname( __FILE__ ) . '/drivers/' . $driver . '.php' );
-		}
-		$class = 'wpdb_driver_' . $driver;
-
-		if ( ! class_exists( $class ) ) {
 			wp_load_translations_early();
 
 			// Load custom DB error template, if present.
@@ -590,9 +570,14 @@ class wpdb_drivers extends wpdb {
 				<p>WordPress requires the mysql, mysqli, or pdo_mysql extension to talk to your database.</p>
 				<p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='https://wordpress.org/support/'>WordPress Support Forums</a>.</p>
 			"), 'db_connect_fail' );
+
+			return false;
+		}
+		else {
+			$this->dbh = new $driver();
 		}
 
-		$this->dbh = new $class();
+		return true;
 	}
 
 	/**
@@ -613,7 +598,9 @@ class wpdb_drivers extends wpdb {
 	 * @param string $dbhost     MySQL database host
 	 */
 	public function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
-		$this->set_driver();
+		if ( ! $this->set_driver() ) {
+			return;
+		}
 
 		register_shutdown_function( array( $this, '__destruct' ) );
 
@@ -819,7 +806,7 @@ class wpdb_drivers extends wpdb {
 		 */
 		$incompatible_modes = (array) apply_filters( 'incompatible_sql_modes', $this->incompatible_modes );
 
-		foreach( $modes as $i => $mode ) {
+		foreach ( $modes as $i => $mode ) {
 			if ( in_array( $mode, $incompatible_modes ) ) {
 				unset( $modes[ $i ] );
 			}
@@ -1406,7 +1393,10 @@ class wpdb_drivers extends wpdb {
 		$options['ca_path'] = defined( 'DB_SSL_CA_PATH' ) ? DB_SSL_CA_PATH : null;
 		$options['cipher'] = defined( 'DB_SSL_CIPHER' ) ? DB_SSL_CIPHER : null;
 
-		$is_connected = $this->dbh->connect( $host, $this->dbuser, $this->dbpassword, $port, $options );
+		$is_connected = false;
+		if ( $this->dbh ) {
+			$is_connected = $this->dbh->connect( $host, $this->dbuser, $this->dbpassword, $port, $options );
+		}
 
 		if ( ! $is_connected && $allow_bail ) {
 			wp_load_translations_early();
@@ -2144,7 +2134,7 @@ class wpdb_drivers extends wpdb {
 		} elseif ( $output == ARRAY_A || $output == ARRAY_N ) {
 			// Return an integer-keyed array of...
 			if ( $this->last_result ) {
-				foreach( (array) $this->last_result as $row ) {
+				foreach ( (array) $this->last_result as $row ) {
 					if ( $output == ARRAY_N ) {
 						// ...integer-keyed row arrays
 						$new_array[] = array_values( get_object_vars( $row ) );
@@ -2843,7 +2833,7 @@ class wpdb_drivers extends wpdb {
 			if ( $col_offset == -1 ) {
 				$i = 0;
 				$new_array = array();
-				foreach( (array) $this->col_info as $col ) {
+				foreach ( (array) $this->col_info as $col ) {
 					$new_array[$i] = $col->{$info_type};
 					$i++;
 				}

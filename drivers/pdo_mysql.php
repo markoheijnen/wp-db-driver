@@ -37,6 +37,12 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	 */
 	private $fetched_rows = array();
 
+
+	public static function is_supported() {
+		return extension_loaded( 'pdo_mysql' );
+	}
+
+
 	/**
 	 * Escape with mysql_real_escape_string()
 	 *
