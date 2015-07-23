@@ -38,6 +38,10 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	private $fetched_rows = array();
 
 
+	public static function get_name() {
+		return 'PDO - MySQL';
+	}
+
 	public static function is_supported() {
 		return extension_loaded( 'pdo_mysql' );
 	}

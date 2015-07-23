@@ -79,6 +79,7 @@ Added emergency override
 = 1.9.4 (2015-07-23) =
 * Sync with 4.2.3 ( Changeset 33310)
 * Extending wpdb back again
+* Add ability to extend it with more drivers through the constant 'WPDB_DRIVERS'
 
 = 1.9.3 (2015-05-07) =
 * Sync with 4.2.2

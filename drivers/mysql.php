@@ -30,6 +30,10 @@ class wpdb_driver_mysql extends wpdb_driver {
 	private $col_info = null;
 
 
+	public static function get_name() {
+		return 'MySQL';
+	}
+
 	public static function is_supported() {
 		return extension_loaded( 'mysql' );
 	}

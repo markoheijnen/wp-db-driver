@@ -1,6 +1,13 @@
 <?php
 
 abstract class wpdb_driver {
+
+	public static function get_name() {
+		if ( function_exists('get_called_class') ) {
+			return get_called_class();
+		}
+	}
+
 	public static function is_supported() {
 		return false;
 	}
