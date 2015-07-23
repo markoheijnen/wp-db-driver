@@ -5,13 +5,17 @@ class WP_DB_Driver_Config {
 	public static function get_drivers() {
 		$driver_folder = dirname( dirname( __FILE__ ) ) . '/drivers';
 
-		$default_drivers = array(
+		$drivers = array(
 			'wpdb_driver_pdo_mysql' => $driver_folder . '/pdo_mysql.php',
 			'wpdb_driver_mysqli'    => $driver_folder . '/mysqli.php',
 			'wpdb_driver_mysql'     => $driver_folder . '/mysql.php',
 		);
 
-		return $default_drivers;
+		if ( defined( 'WPDB_DRIVERS' ) && is_array( WPDB_DRIVERS ) ) {
+			$drivers = WPDB_DRIVERS + $drivers;
+		}
+
+		return $drivers;
 	}
 
 	/**
