@@ -2716,6 +2716,7 @@ class wpdb_drivers extends wpdb {
 			'value'   => $query,
 			'charset' => $charset,
 			'ascii'   => false,
+			'length'  => false,
 		);
 
 		$data = $this->strip_invalid_text( array( $data ) );
