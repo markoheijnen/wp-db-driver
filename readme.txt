@@ -49,9 +49,9 @@ PDO > MySQLi > MySQL
 
 In your wp-config.php, add a new constant:
 
-`define( 'WPDB_DRIVER', 'pdo_mysql' );`
+`define( 'WPDB_DRIVER', 'wpdb_driver_pdo_mysql' );`
 
-You can specify `pdo_mysql`, `mysqli`, or `mysql`.  Any other driver will cause an error.
+You can specify `wpdb_driver_pdo_mysql`, `wpdb_driver_mysqli`, or `wpdb_driver_mysql`.  Any other driver will cause an error.
 
 **Which driver is best for my site?**
 
