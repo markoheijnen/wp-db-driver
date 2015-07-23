@@ -24,13 +24,16 @@ class WP_DB_Driver_Config {
 	 * @return string The classname of the driver
 	 */
 	public static function get_current_driver() {
-		$driver = false;
+		$driver  = false;
+		$drivers = self::get_drivers();
 
 		if ( defined( 'WPDB_DRIVER' ) && self::class_is_driver_and_supported( WPDB_DRIVER ) ) {
+			if ( isset( $drivers[ WPDB_DRIVER ] ) ) {
+				include_once $drivers[ WPDB_DRIVER ];
+			}
+
 			return WPDB_DRIVER;
 		}
-
-		$drivers = self::get_drivers();
 
 		if ( defined( 'WP_USE_EXT_MYSQL' ) && WP_USE_EXT_MYSQL ) {
 			$drivers = array( 'wpdb_driver_mysql' => $drivers['wpdb_driver_mysql'] ) + $drivers;
