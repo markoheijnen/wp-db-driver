@@ -27,12 +27,28 @@ class WP_DB_Driver_Config {
 		$driver  = false;
 		$drivers = self::get_drivers();
 
-		if ( defined( 'WPDB_DRIVER' ) && self::class_is_driver_and_supported( WPDB_DRIVER ) ) {
-			if ( isset( $drivers[ WPDB_DRIVER ] ) ) {
-				include_once $drivers[ WPDB_DRIVER ];
+		if ( defined( 'WPDB_DRIVER' ) ) {
+			$driver = WPDB_DRIVER;
+
+			switch( $driver ) {
+				case 'pdo_mysql':
+					$driver = 'wpdb_driver_pdo_mysql';
+					break;
+				case 'mysqli':
+					$driver = 'wpdb_driver_mysqli';
+					break;
+				case 'mysql':
+					$driver = 'wpdb_driver_mysql';
+					break;
 			}
 
-			return WPDB_DRIVER;
+			if ( self::class_is_driver_and_supported( $driver ) ) {
+				if ( isset( $drivers[ $driver ] ) ) {
+					include_once $drivers[ $driver ];
+				}
+
+				return $driver;
+			}
 		}
 
 		if ( defined( 'WP_USE_EXT_MYSQL' ) && WP_USE_EXT_MYSQL ) {
