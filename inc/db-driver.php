@@ -1454,6 +1454,15 @@ class wpdb_drivers extends wpdb {
 	}
 
 	/**
+	 * Disconnect the database connection
+	 */
+	public function disconnect() {
+		if ( $this->dbh ) {
+			$this->dbh->disconnect();
+		}
+	}
+
+	/**
 	 * Check that the connection to the database is still up. If not, try to reconnect.
 	 *
 	 * If this function is unable to reconnect, it will forcibly die, or if after the

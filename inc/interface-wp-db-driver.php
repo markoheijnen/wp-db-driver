@@ -17,6 +17,7 @@ abstract class wpdb_driver {
 	public abstract function flush();
 	public abstract function is_connected();
 	public abstract function connect( $host, $user, $pass, $port = 3306, $options = array() );
+	public abstract function disconnect();
 	public abstract function ping();
 	public abstract function set_charset( $charset = null, $collate = null );
 	public abstract function select( $name );
