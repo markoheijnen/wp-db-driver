@@ -1,8 +1,8 @@
 <?php
 
-require( dirname( __FILE__ ) . '/inc/config.php' );
-require( dirname( __FILE__ ) . '/inc/error-handler.php' );
-require( dirname( __FILE__ ) . '/inc/interface-wp-db-driver.php' );
+require( dirname( __FILE__ ) . '/config.php' );
+require( dirname( __FILE__ ) . '/error-handler.php' );
+require( dirname( __FILE__ ) . '/interface-wp-db-driver.php' );
 
 class wpdb_drivers extends wpdb {
 
