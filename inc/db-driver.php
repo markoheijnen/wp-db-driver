@@ -613,15 +613,6 @@ class wpdb_drivers extends wpdb {
 		$this->dbname = $dbname;
 		$this->dbhost = $dbhost;
 
-		// wp-config.php creation will manually connect when ready. 
-		if ( defined( 'WP_SETUP_CONFIG' ) ) {
-			global $wp_version;
-
-			if ( version_compare( $wp_version, '4.0-alpha-28611', '>' ) ) { // PLUGIN CHECK
-				return;
-			}
-		}
-
 		$this->db_connect();
 	}
 
