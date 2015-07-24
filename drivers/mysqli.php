@@ -196,6 +196,10 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	public function query( $query ) {
 		$return_val = 0;
 
+		if ( ! $this->dbh ) {
+			return false;
+		}
+
 		$this->result = $this->dbh->query( $query );
 
 		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {

@@ -182,6 +182,10 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	public function query( $query ) {
 		$return_val = 0;
 
+		if ( ! $this->dbh ) {
+			return false;
+		}
+
 		try {
 			$this->result = $this->dbh->query( $query );
 		}
