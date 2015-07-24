@@ -42,11 +42,11 @@ class WP_DB_Driver_Config {
 					break;
 			}
 
-			if ( self::class_is_driver_and_supported( $driver ) ) {
-				if ( isset( $drivers[ $driver ] ) ) {
-					include_once $drivers[ $driver ];
-				}
+			if ( isset( $drivers[ $driver ] ) ) {
+				include_once $drivers[ $driver ];
+			}
 
+			if ( self::class_is_driver_and_supported( $driver ) ) {
 				return $driver;
 			}
 		}
@@ -58,7 +58,7 @@ class WP_DB_Driver_Config {
 		foreach ( $drivers as $class => $file ) {
 			include_once $file;
 
-			if ( ! self::class_is_driver_and_supported( $class ) ) {
+			if ( self::class_is_driver_and_supported( $class ) ) {
 				return $class;
 			}
 		}
@@ -67,7 +67,7 @@ class WP_DB_Driver_Config {
 	}
 
 	private static function class_is_driver_and_supported( $class ) {
-		if ( $class instanceof wpdb_driver && call_user_func( array( $class, 'is_supported' ) ) ) {
+		if ( call_user_func( array( $class, 'is_supported' ) ) ) {
 			return true;
 		}
 
