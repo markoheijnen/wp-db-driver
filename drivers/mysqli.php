@@ -89,7 +89,7 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	 * @return bool
 	 */
 	public function is_connected() {
-		if ( ! $this->dbh || 2006 ==  $this->dbh->connect_errno ) {
+		if ( ! $this->dbh || 2006 == $this->dbh->connect_errno ) {
 			return false;
 		}
 
@@ -157,6 +157,10 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	 * @return bool
 	 */
 	public function ping() {
+		if ( ! $this->dbh ) {
+			return false;
+		}
+
 		return @ $this->dbh->ping();
 	}
 
