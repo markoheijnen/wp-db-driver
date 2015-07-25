@@ -278,7 +278,7 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 		$num_fields = $this->result->columnCount();
 
 		for ( $i = 0; $i < $num_fields; $i++ ) {
-			$this->col_info[ $i ] = $this->result->fetchColumn( $i );
+			$this->col_info[ $i ] = (object) $this->result->getColumnMeta( $i );
 		}
 
 		return $this->col_info;
