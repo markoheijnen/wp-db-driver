@@ -67,7 +67,7 @@ class WP_DB_Driver_Config {
 	}
 
 	private static function class_is_driver_and_supported( $class ) {
-		if ( call_user_func( array( $class, 'is_supported' ) ) ) {
+		if ( class_exists( $class ) && call_user_func( array( $class, 'is_supported' ) ) ) {
 			return true;
 		}
 
