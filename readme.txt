@@ -1,7 +1,7 @@
 === WP DB Driver ===
 Contributors: markoheijnen, kurtpayne
 Tags: database, backend, pdo, mysqli, mysql
-Requires at least: 3.6
+Requires at least: 4.2
 Tested up to: 4.2.3
 Stable tag: 2.0
 License: GPLv2 or later
@@ -76,10 +76,12 @@ Added emergency override
 
 == Changelog ==
 
-= 1.9.4 (2015-07-23) =
+= 2.0 (2015-07-25) =
 * Sync with 4.2.3 ( Changeset 33310)
+* Increased minimal WordPress version to 4.2
 * Extending wpdb back again
 * Add ability to extend it with more drivers through the constant 'WPDB_DRIVERS'
+* Fully compatible with the unit tests of WordPress except HHVM PDO
 
 = 1.9.3 (2015-05-07) =
 * Sync with 4.2.2
