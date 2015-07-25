@@ -25,6 +25,9 @@ install_wp() {
 	mkdir -p $WP_CORE_DIR
 
 	git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_CORE_DIR
+
+	cd $WP_CORE_DIR
+	rm tests/phpunit/tests/formatting/WpReplaceInHtmlTags.php;
 }
 
 install_test_suite() {
