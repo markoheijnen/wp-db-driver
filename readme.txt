@@ -3,7 +3,7 @@ Contributors: markoheijnen, kurtpayne
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 4.2
 Tested up to: 4.2.3
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 
 An improved database layer for WordPress
@@ -75,6 +75,9 @@ For more information see:
 Added emergency override
 
 == Changelog ==
+
+= 2.0.1 =
+* Reupload code from GitHub
 
 = 2.0 (2015-07-25) =
 * Sync with 4.2.3 ( Changeset 33310)
