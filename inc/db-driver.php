@@ -1590,6 +1590,7 @@ class wpdb_drivers extends wpdb {
 		// MySQL server has gone away, try to reconnect
 		if ( ! $this->dbh->is_connected() ) {
 			if ( $this->check_connection() ) {
+				$this->flush();
 				$this->_do_query( $query );
 			}
 			else {
