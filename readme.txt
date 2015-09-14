@@ -1,5 +1,6 @@
 === WP DB Driver ===
 Contributors: markoheijnen, kurtpayne
+Donate link: https://markoheijnen.com/donate
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 4.2
 Tested up to: 4.2.3

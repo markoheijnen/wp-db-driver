@@ -1,12 +1,17 @@
 <?php
 /*
 	Plugin Name: WP DB Driver
-	Plugin URI:  http://core.trac.wordpress.org/ticket/21663
 	Description: Enables PDO or MySQLi
-	Author:      Marko Heijnen and Kurt Payne
-	Text Domain: wp-db-driver
 	Version:     2.0.1
+
+	Plugin URI:  http://core.trac.wordpress.org/ticket/21663
+
+	Author:      Marko Heijnen and Kurt Payne
 	Author URI:  http://core.trac.wordpress.org/ticket/21663
+	Donate link: https://markoheijnen.com/donate
+
+	Text Domain: wp-db-driver
+	Domain Path: /languages
 	Network:     True
 */
 
@@ -225,7 +230,7 @@ class WP_DB_Driver_Plugin {
 }
 
 if ( is_admin() ) {
-	$GLOBAL['wp_db_driver_plugin'] = new WP_DB_Driver_Plugin;
+	$GLOBALS['wp_db_driver_plugin'] = new WP_DB_Driver_Plugin;
 }
 
 register_deactivation_hook( __FILE__, array( 'WP_DB_Driver_Plugin', 'deactivate' ) );
