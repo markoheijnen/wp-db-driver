@@ -98,6 +98,10 @@ class WP_DB_Driver_Plugin {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
+		// Load if our custom wpdb wasn't loaded yet.
+		require_once dirname( __FILE__ ) . '/inc/config.php';
+		require_once dirname( __FILE__ ) . '/inc/interface-wp-db-driver.php';
+
 		echo '<div class="wrap">';
 
 		screen_icon('options-general');
