@@ -1565,6 +1565,8 @@ class wpdb_drivers extends wpdb {
 			return false;
 		}
 
+		wp_load_translations_early();
+
 		$message = '<h1>' . __( 'Error reconnecting to the database' ) . "</h1>\n";
 
 		$message .= '<p>' . sprintf(
