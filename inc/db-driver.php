@@ -1413,7 +1413,7 @@ class wpdb_drivers extends wpdb {
 			if ( $attempt_fallback && call_user_func( array( $driver, 'is_supported' ) ) ) {
 				$this->dbh = new $driver();
 
-				return $this->db_connect();
+				return $this->db_connect( $allow_bail );
 			}
 		}
 
