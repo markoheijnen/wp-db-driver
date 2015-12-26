@@ -1674,6 +1674,7 @@ class wpdb_drivers extends wpdb {
 	 *
 	 * @param string       $table  Table name
 	 * @param array        $data   Data to insert (in column => value pairs). Both $data columns and $data values should be "raw" (neither should be SQL escaped).
+	 *                             Sending a null value will cause the column to be set to NULL - the corresponding format is ignored in this case. 
 	 * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
 	 *                             If string, that format will be used for all of the values in $data.
 	 * 	                           A format is one of '%d', '%f', '%s' (integer, float, string).
@@ -1698,6 +1699,7 @@ class wpdb_drivers extends wpdb {
 	 * @param string       $table  Table name
 	 * @param array        $data   Data to insert (in column => value pairs).
 	 *                             Both $data columns and $data values should be "raw" (neither should be SQL escaped).
+	 *                             Sending a null value will cause the column to be set to NULL - the corresponding format is ignored in this case.
 	 * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
 	 *                             If string, that format will be used for all of the values in $data.
 	 *                             A format is one of '%d', '%f', '%s' (integer, float, string).
@@ -1722,6 +1724,7 @@ class wpdb_drivers extends wpdb {
 	 * @param string       $table  Table name
 	 * @param array        $data   Data to insert (in column => value pairs).
 	 *                             Both $data columns and $data values should be "raw" (neither should be SQL escaped).
+	 *                             Sending a null value will cause the column to be set to NULL - the corresponding format is ignored in this case.
 	 * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
 	 *                             If string, that format will be used for all of the values in $data.
 	 *                             A format is one of '%d', '%f', '%s' (integer, float, string).
@@ -1743,6 +1746,10 @@ class wpdb_drivers extends wpdb {
 
 		$formats = $values = array();
 		foreach ( $data as $value ) {
+			if ( is_null( $value['value'] ) ) {
+				$formats[] = 'NULL';
+				continue;
+			}
 			$formats[] = $value['format'];
 			$values[]  = $value['value'];
 		}
@@ -1770,7 +1777,12 @@ class wpdb_drivers extends wpdb {
 	 *
 	 * @param string       $table        Table name
 	 * @param array        $data         Data to update (in column => value pairs). Both $data columns and $data values should be "raw" (neither should be SQL escaped).
-	 * @param array        $where        A named array of WHERE clauses (in column => value pairs). Multiple clauses will be joined with ANDs. Both $where columns and $where values should be "raw".
+	 *                                   Sending a null value will cause the column to be set to NULL - the corresponding
+	 *                                   format is ignored in this case.
+	 * @param array        $where        A named array of WHERE clauses (in column => value pairs).
+	 *                                   Multiple clauses will be joined with ANDs.
+	 *                                   Both $where columns and $where values should be "raw".
+	 *                                   Sending a null value will create an IS NULL comparison - the corresponding format will be ignored in this case.
 	 * @param array|string $format       Optional. An array of formats to be mapped to each of the values in $data.
 	 *                                   If string, that format will be used for all of the values in $data.
 	 * 	                                 A format is one of '%d', '%f', '%s' (integer, float, string).
@@ -1799,11 +1811,21 @@ class wpdb_drivers extends wpdb {
 		$fields = $conditions = $values = array();
 
 		foreach ( $data as $field => $value ) {
+			if ( is_null( $value['value'] ) ) {
+				$fields[] = "`$field` = NULL";
+				continue;
+			}
+
 			$fields[] = "`$field` = " . $value['format'];
 			$values[] = $value['value'];
 		}
 
 		foreach ( $where as $field => $value ) {
+			if ( is_null( $value['value'] ) ) {
+				$conditions[] = "`$field` IS NULL";
+				continue;
+			}
+
 			$conditions[] = "`$field` = " . $value['format'];
 			$values[]     = $value['value'];
 		}
@@ -1849,6 +1871,11 @@ class wpdb_drivers extends wpdb {
 
 		$conditions = $values = array();
 		foreach ( $where as $field => $value ) {
+			if ( is_null( $value['value'] ) ) {
+				$conditions[] = "`$field` IS NULL";
+				continue;
+			}
+
 			$conditions[] = "`$field` = " . $value['format'];
 			$values[] = $value['value'];
 		}
