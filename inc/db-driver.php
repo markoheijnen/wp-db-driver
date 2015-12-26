@@ -347,9 +347,9 @@ class wpdb_drivers extends wpdb {
 	 */ 
 	public $termmeta;
 
-	/*
-	 * Global and Multisite tables
-	 */
+	//
+	// Global and Multisite tables
+	//
 
 	/**
 	 * WordPress User Metadata table
