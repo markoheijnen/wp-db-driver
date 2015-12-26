@@ -2739,11 +2739,18 @@ class wpdb_drivers extends wpdb {
 						$charset = $value['charset'];
 					}
 
+					if ( $this->charset ) {
+						$connection_charset = $this->charset;
+					}
+					else {
+						$connection_charset = $this->dbh->connection_charset();
+					}
+
 					if ( is_array( $value['length'] ) ) {
-						$queries[ $col ] = $this->prepare( "CONVERT( LEFT( CONVERT( %s USING $charset ), %.0f ) USING {$this->charset} )", $value['value'], $value['length']['length'] );
+						$queries[ $col ] = $this->prepare( "CONVERT( LEFT( CONVERT( %s USING $charset ), %.0f ) USING $connection_charset )", $value['value'], $value['length']['length'] );
 					} else if ( 'binary' !== $charset ) {
 						// If we don't have a length, there's no need to convert binary - it will always return the same result.
-						$queries[ $col ] = $this->prepare( "CONVERT( CONVERT( %s USING $charset ) USING {$this->charset} )", $value['value'] );
+						$queries[ $col ] = $this->prepare( "CONVERT( CONVERT( %s USING $charset ) USING $connection_charset )", $value['value'] );
 					}
 
 					unset( $data[ $col ]['db'] );

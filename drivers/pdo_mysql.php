@@ -161,6 +161,15 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	}
 
 	/**
+	 * Get the name of the current character set.
+	 *
+	 * @return string Returns the name of the character set
+	 */
+	public function client_encoding() {
+		return (string) $this->query("SHOW VARIABLES LIKE 'character_set_client'");
+	}
+
+	/**
 	 * Select database
 	 * @return void
 	 */
