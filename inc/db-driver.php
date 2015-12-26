@@ -2911,13 +2911,16 @@ class wpdb_drivers extends wpdb {
 	 * @return false|void
 	 */
 	public function bail( $message, $error_code = '500' ) {
-		if ( !$this->show_errors ) {
-			if ( class_exists( 'WP_Error' ) )
+		if ( ! $this->show_errors ) {
+			if ( class_exists( 'WP_Error', false ) ) {
 				$this->error = new WP_Error($error_code, $message);
-			else
+			} else {
 				$this->error = $message;
+			}
+
 			return false;
 		}
+
 		wp_die($message);
 	}
 
