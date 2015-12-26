@@ -20,7 +20,7 @@ abstract class wpdb_driver {
 	public abstract function disconnect();
 	public abstract function ping();
 	public abstract function set_charset( $charset = null, $collate = null );
-	public abstract function client_encoding();
+	public abstract function connection_charset();
 	public abstract function select( $name );
 	public abstract function query( $query );
 	public abstract function query_result( $row, $field = 0 );

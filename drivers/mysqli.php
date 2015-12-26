@@ -189,7 +189,7 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	 *
 	 * @return string Returns the name of the character set
 	 */
-	public function client_encoding() {
+	public function connection_charset() {
 		return mysqli_character_set_name( $this->dbh );
 	}
 

@@ -144,7 +144,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 *
 	 * @return string Returns the name of the character set
 	 */
-	public function client_encoding() {
+	public function connection_charset() {
 		return mysql_client_encoding( $this->dbh );
 	}
 
