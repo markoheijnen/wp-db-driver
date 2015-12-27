@@ -76,11 +76,15 @@ Added emergency override
 
 == Changelog ==
 
-= 2.1.0 =
-* Sync with 4.4 ( Changeset 35787)
-* Changed is_mysql logic. 
+= 2.1.1 =
+* Change global $custom_drivers to $wp_custom_drivers
 
-= 2.0.1 =
+= 2.1.0 (2015-12-27) =
+* Sync with 4.4 ( Changeset 35787)
+* Changed is_mysql logic.
+* Change constant WPDB_DRIVERS to a global $custom_drivers
+
+= 2.0.1 (2015-07-25) =
 * Reupload code from GitHub
 
 = 2.0 (2015-07-25) =

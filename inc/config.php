@@ -3,7 +3,7 @@
 class WP_DB_Driver_Config {
 
 	public static function get_drivers() {
-		global $custom_drivers;
+		global $wp_custom_drivers;
 
 		$driver_folder = dirname( dirname( __FILE__ ) ) . '/drivers';
 
@@ -13,8 +13,8 @@ class WP_DB_Driver_Config {
 			'wpdb_driver_mysql'     => $driver_folder . '/mysql.php',
 		);
 
-		if ( isset( $custom_drivers ) && is_array( $custom_drivers ) ) {
-			$drivers = $custom_drivers + $drivers;
+		if ( isset( $wp_custom_drivers ) && is_array( $wp_custom_drivers ) ) {
+			$drivers = $wp_custom_drivers + $drivers;
 		}
 
 		return $drivers;
