@@ -56,9 +56,8 @@ You can specify `wpdb_driver_pdo_mysql`, `wpdb_driver_mysqli`, or `wpdb_driver_m
 
 **Which driver is best for my site?**
 
-They should all function equally well for WordPress.  The MySQL extension is being retired.  In PHP 5.5, using this extension issues E_DEPRECATED errors.
-In PHP 5.6, it will no longer be available.  The two alternative drivers are PDO and MySQLi.  If WordPress switches to MySQLi or PDO, some cool new features
-become available to developers.
+They should all function equally well for WordPress.  The MySQL extension is being retired. In PHP 5.5, using this extension issues E_DEPRECATED errors.
+In PHP 7.0, it will no longer be available. The two alternative drivers are PDO and MySQLi.
 
 <http://net.tutsplus.com/tutorials/php/pdo-vs-mysqli-which-should-you-use/>
 
