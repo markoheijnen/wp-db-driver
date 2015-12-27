@@ -2,7 +2,7 @@
 /*
 	Plugin Name: WP DB Driver
 	Description: Enables PDO or MySQLi
-	Version:     2.0.1
+	Version:     2.1.0
 
 	Plugin URI:  http://core.trac.wordpress.org/ticket/21663
 
