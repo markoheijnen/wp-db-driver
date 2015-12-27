@@ -549,7 +549,7 @@ class wpdb_drivers extends wpdb {
 	 */
 	private function set_driver() {
 		$driver = WP_DB_Driver_Config::get_current_driver();
-var_dump( $driver );
+
 		if ( ! $driver ) {
 
 			wp_load_translations_early();
@@ -2416,7 +2416,6 @@ var_dump( $driver );
 
 		// Return false when it's not a string column.
 		if ( empty( $this->col_meta[ $tablekey ][ $columnkey ]->Collation ) ) {
-			var_dump( $this->col_meta[ $tablekey ][ $columnkey ]->Collation );
 			return false;
 		}
 
