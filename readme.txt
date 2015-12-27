@@ -2,9 +2,9 @@
 Contributors: markoheijnen, kurtpayne
 Donate link: https://markoheijnen.com/donate
 Tags: database, backend, pdo, mysqli, mysql
-Requires at least: 4.2
-Tested up to: 4.2.3
 Stable tag: 2.0.1
+Requires at least: 4.2.0
+Tested up to: 4.4.0
 License: GPLv2 or later
 
 An improved database layer for WordPress
