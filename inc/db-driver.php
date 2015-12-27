@@ -524,6 +524,19 @@ class wpdb_drivers extends wpdb {
 	public $func_call;
 
 	/**
+	 * Whether MySQL is used as the database engine.
+	 *
+	 * Set in WPDB::db_connect(). This is used when checking against the required
+	 * MySQL version for WordPress. Normally, a replacement database drop-in (db.php)
+	 * will skip these checks, but setting this to true will force the checks to occur.
+	 *
+	 * @since 3.3.0
+	 * @access public
+	 * @var bool
+	 */
+	public $is_mysql = true;
+
+	/**
 	 * A list of incompatible SQL modes.
 	 *
 	 * @since 3.9.0
@@ -635,10 +648,6 @@ class wpdb_drivers extends wpdb {
 	public function __get( $name ) {
 		if ( 'col_info' === $name ) {
 			$this->load_col_info();
-		}
-
-		if ( 'is_mysql' == $name ) {
-			return $this->dbh->is_mysql();
 		}
 
 		if ( isset( $this->$name ) ) {
@@ -1400,6 +1409,8 @@ class wpdb_drivers extends wpdb {
 		if ( ! $this->dbh ) {
 			return false;
 		}
+
+		$this->is_mysql = $this->dbh->is_mysql();
 
 		if ( false !== strpos( $this->dbhost, ':' ) ) {
 			list( $host, $port ) = explode( ':', $this->dbhost );
@@ -2395,7 +2406,7 @@ class wpdb_drivers extends wpdb {
 		}
 
 		// Skip this entirely if this isn't a MySQL database.
-		if ( $this->dbh->is_connected() && $this->dbh->is_mysql() ) {
+		if ( ! $this->is_mysql ) {
 			return false;
 		}
 
@@ -2448,7 +2459,7 @@ class wpdb_drivers extends wpdb {
 		$columnkey = strtolower( $column );
 
 		// Skip this entirely if this isn't a MySQL database.
-		if ( $this->dbh->is_connected() && $this->dbh->is_mysql() ) {
+		if ( ! $this->is_mysql ) {
 			return false;
 		}
 
