@@ -637,6 +637,10 @@ class wpdb_drivers extends wpdb {
 			$this->load_col_info();
 		}
 
+		if ( 'is_mysql' == $name ) {
+			return $this->dbh->is_mysql();
+		}
+
 		if ( isset( $this->$name ) ) {
 			return $this->$name;
 		}
