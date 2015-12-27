@@ -2408,6 +2408,7 @@ class wpdb_drivers extends wpdb {
 
 		// Skip this entirely if this isn't a MySQL database.
 		if ( empty( $this->is_mysql ) ) {
+			var_dump( 'not mysql' );
 			return false;
 		}
 
@@ -2432,6 +2433,7 @@ class wpdb_drivers extends wpdb {
 
 		// Return false when it's not a string column.
 		if ( empty( $this->col_meta[ $tablekey ][ $columnkey ]->Collation ) ) {
+			var_dump( $this->col_meta[ $tablekey ][ $columnkey ] );
 			return false;
 		}
 
