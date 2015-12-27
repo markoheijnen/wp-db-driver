@@ -2391,7 +2391,7 @@ var_dump( $driver );
 		}
 
 		// Skip this entirely if this isn't a MySQL database.
-		if ( empty( $this->dbh->is_mysql() ) ) {
+		if ( $this->dbh->is_mysql() ) {
 			return false;
 		}
 
