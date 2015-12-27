@@ -157,6 +157,14 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	 * @param string   $collate Optional. The collation. Default null.
 	 */
 	public function set_charset( $charset = null, $collate = null ) {
+		if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
+			if ( $this->has_cap( 'set_charset' ) ) {
+				$this->dbh->exec( "set names " . $charset );
+
+				return true;
+			}
+		}
+
 		return false;
 	}
 

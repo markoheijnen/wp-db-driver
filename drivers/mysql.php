@@ -128,7 +128,6 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 */
 	public function set_charset( $charset = null, $collate = null ) {
 		if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
-
 			if ( function_exists( 'mysql_set_charset' ) && $this->has_cap( 'set_charset' ) ) {
 				mysql_set_charset( $charset, $this->dbh );
 
