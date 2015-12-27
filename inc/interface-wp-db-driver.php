@@ -12,6 +12,21 @@ abstract class wpdb_driver {
 		return false;
 	}
 
+	/**
+	 * Whether MySQL is used as the database engine.
+	 *
+	 * This is used when checking against the required MySQL version for WordPress.
+	 * Normally, a replacement database drop-in (db.php) will skip these checks,
+	 * but setting this to true will force the checks to occur.
+	 *
+	 * @since 3.3.0
+	 * @access public
+	 * @var bool
+	 */
+	public function is_mysql() {
+		return true;
+	}
+
 	public abstract function escape( $string );
 	public abstract function get_error_message();
 	public abstract function flush();

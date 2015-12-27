@@ -524,20 +524,6 @@ class wpdb_drivers extends wpdb {
 	public $func_call;
 
 	/**
-	 * Whether MySQL is used as the database engine.
-	 *
-	 * Set in WPDB::db_connect() to true, by default. This is used when checking
-	 * against the required MySQL version for WordPress. Normally, a replacement
-	 * database drop-in (db.php) will skip these checks, but setting this to true
-	 * will force the checks to occur.
-	 *
-	 * @since 3.3.0
-	 * @access public
-	 * @var bool
-	 */
-	public $is_mysql = null;
-
-	/**
 	 * A list of incompatible SQL modes.
 	 *
 	 * @since 3.9.0
@@ -563,7 +549,7 @@ class wpdb_drivers extends wpdb {
 	 */
 	private function set_driver() {
 		$driver = WP_DB_Driver_Config::get_current_driver();
-
+var_dump( $driver );
 		if ( ! $driver ) {
 
 			wp_load_translations_early();
@@ -1410,8 +1396,6 @@ class wpdb_drivers extends wpdb {
 		if ( ! $this->dbh ) {
 			return false;
 		}
-
-		$this->is_mysql = true;
 
 		if ( false !== strpos( $this->dbhost, ':' ) ) {
 			list( $host, $port ) = explode( ':', $this->dbhost );
@@ -2407,8 +2391,7 @@ class wpdb_drivers extends wpdb {
 		}
 
 		// Skip this entirely if this isn't a MySQL database.
-		if ( empty( $this->is_mysql ) ) {
-			var_dump( 'not mysql' );
+		if ( empty( $this->dbh->is_mysql() ) ) {
 			return false;
 		}
 
@@ -2433,7 +2416,7 @@ class wpdb_drivers extends wpdb {
 
 		// Return false when it's not a string column.
 		if ( empty( $this->col_meta[ $tablekey ][ $columnkey ]->Collation ) ) {
-			var_dump( $this->col_meta[ $tablekey ][ $columnkey ] );
+			var_dump( $this->col_meta[ $tablekey ][ $columnkey ]->Collation );
 			return false;
 		}
 
@@ -2462,7 +2445,7 @@ class wpdb_drivers extends wpdb {
 		$columnkey = strtolower( $column );
 
 		// Skip this entirely if this isn't a MySQL database.
-		if ( empty( $this->is_mysql ) ) {
+		if ( $this->dbh->is_mysql() ) {
 			return false;
 		}
 
