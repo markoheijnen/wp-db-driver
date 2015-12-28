@@ -722,22 +722,6 @@ class wpdb_drivers extends wpdb {
 	}
 
 	/**
-	 * Change the current SQL mode, and ensure its WordPress compatibility.
-	 *
-	 * If no modes are passed, it will ensure the current MySQL server
-	 * modes are compatible.
-	 *
-	 * @since 3.9.0
-	 *
-	 * @param array $modes Optional. A list of SQL modes to set.
-	 */
-	public function set_sql_mode( $modes = array() ) {
-		if ( method_exists( $this->dbh, 'set_sql_mode' ) ) {
-			$this->dbh->set_sql_mode( $modes );
-		}
-	}
-
-	/**
 	 * Sets the table prefix for the WordPress tables.
 	 *
 	 * @since 2.5.0
@@ -2950,6 +2934,40 @@ class wpdb_drivers extends wpdb {
 	/*
 	 * Deprecated methods
 	 */
+
+
+
+	/**
+	 * Sets the connection's character set.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param resource $dbh     The resource given by mysql_connect
+	 * @param string   $charset Optional. The character set. Default null.
+	 * @param string   $collate Optional. The collation. Default null.
+	 */
+	public function set_charset( $dbh, $charset = null, $collate = null ) {
+		if ( method_exists( $dbh, 'set_charset' ) ) {
+			$dbh->set_charset( $charset, $collate );
+		}
+	}
+
+	/**
+	 * Change the current SQL mode, and ensure its WordPress compatibility.
+	 *
+	 * If no modes are passed, it will ensure the current MySQL server
+	 * modes are compatible.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param array $modes Optional. A list of SQL modes to set.
+	 */
+	public function set_sql_mode( $modes = array() ) {
+		if ( method_exists( $this->dbh, 'set_sql_mode' ) ) {
+			$this->dbh->set_sql_mode( $modes );
+		}
+	}
+
 	public function select( $db, $dbh = NULL ) {}
 
 }

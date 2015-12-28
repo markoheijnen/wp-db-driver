@@ -134,13 +134,24 @@ class wpdb_driver_mysql extends wpdb_driver_mysql_shared {
 	/**
 	 * Sets the connection's character set.
 	 */
-	public function set_charset() {
-		if ( $this->has_cap( 'collation' ) && ! empty( WP_DB_Driver_Config::$charset ) ) {
-			if ( function_exists( 'mysql_set_charset' ) && $this->has_cap( 'set_charset' ) ) {
-				mysql_set_charset( WP_DB_Driver_Config::$charset, $this->dbh );
+	public function set_charset( $charset = null, $collate = null ) {
+		if ( ! isset( $charset ) ) {
+			$charset = WP_DB_Driver_Config::$charset;
+		}
 
-				return true;
+		if ( ! isset( $collate ) ) {
+			$collate = WP_DB_Driver_Config::$collate;
+		}
+
+		if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
+			if ( function_exists( 'mysql_set_charset' ) && $this->has_cap( 'set_charset' ) ) {
+				mysql_set_charset( $charset, $this->dbh );
 			}
+			else {
+				$this->set_charset( $charset, $collate );
+			}
+
+			return true;
 		}
 
 		return false;

@@ -18,12 +18,12 @@ abstract class wpdb_driver_mysql_shared extends wpdb_driver {
 	 *
 	 * @since 3.1.0
 	 */
-	public function set_charset() {
-		if ( $this->has_cap( 'collation' ) && ! empty( WP_DB_Driver_Config::$charset ) ) {
-			$query = $this->prepare( 'SET NAMES %s', WP_DB_Driver_Config::$charset );
+	public function set_charset( $charset = null, $collate = null ) {
+		if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
+			$query = $this->prepare( 'SET NAMES %s', $charset );
 
-			if ( ! empty( WP_DB_Driver_Config::$collate ) ) {
-				$query .= $this->prepare( ' COLLATE %s', WP_DB_Driver_Config::$collate );
+			if ( ! empty( $collate ) ) {
+				$query .= $this->prepare( ' COLLATE %s', $collate );
 			}
 
 			$this->query( $query );
