@@ -1429,29 +1429,6 @@ class wpdb_drivers extends wpdb {
 
 		$is_connected = $this->dbh->connect( $host, $this->dbuser, $this->dbpassword, $port, $options );
 
-		if ( ! $is_connected && ! $this->dbh instanceof wpdb_driver_mysql ) {
-			$this->dbh = null;
-
-			$attempt_fallback = true;
-
-			if ( $this->has_connected ) {
-				$attempt_fallback = false;
-			} elseif ( defined( 'WP_USE_EXT_MYSQL' ) && ! WP_USE_EXT_MYSQL ) {
-				$attempt_fallback = false;
-			}
-
-			$drivers = WP_DB_Driver_Config::get_drivers();
-			$driver  = 'wpdb_driver_mysql';
-
-			include_once $drivers[ $driver ];
-
-			if ( $attempt_fallback && call_user_func( array( $driver, 'is_supported' ) ) ) {
-				$this->dbh = new $driver();
-
-				return $this->db_connect( $allow_bail );
-			}
-		}
-
 		if ( ! $is_connected && $allow_bail ) {
 			wp_load_translations_early();
 
