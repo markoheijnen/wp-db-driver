@@ -3,6 +3,17 @@
 abstract class wpdb_driver_mysql_shared extends wpdb_driver {
 
 	/**
+	 * A list of incompatible SQL modes.
+	 *
+	 * @since 3.9.0
+	 * @access protected
+	 * @var array
+	 */
+	protected $incompatible_modes = array( 'NO_ZERO_DATE', 'ONLY_FULL_GROUP_BY',
+		'STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL' );
+
+
+	/**
 	 * Sets the connection's character set.
 	 *
 	 * @since 3.1.0

@@ -538,16 +538,6 @@ class wpdb_drivers extends wpdb {
 	public $is_mysql = true;
 
 	/**
-	 * A list of incompatible SQL modes.
-	 *
-	 * @since 3.9.0
-	 * @access protected
-	 * @var array
-	 */
-	protected $incompatible_modes = array( 'NO_ZERO_DATE', 'ONLY_FULL_GROUP_BY',
-		'STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL' );
-
-	/**
 	 * Whether we've managed to successfully connect at some point
 	 *
 	 * @since 3.9.0
