@@ -75,7 +75,7 @@ install_db() {
 
 	# create database
 	if [[ $WPDB_DRIVER == 'pdo_pgsql' ]]; then
-		psql -c 'create database $DB_NAME;' -U $DB_USER
+		psql -c "create database $DB_NAME;" -U $DB_USER
 	else
 		mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 	fi
