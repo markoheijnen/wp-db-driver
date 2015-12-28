@@ -9,7 +9,7 @@
  * @subpackage Database
  * @since 3.6.0
  */
-class wpdb_driver_mysqli extends wpdb_driver {
+class wpdb_driver_mysqli extends wpdb_driver_mysql_shared {
 
 	/**
 	 * Database link
@@ -100,7 +100,7 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	 * Connect to database
 	 * @return bool
 	 */
-	public function connect( $host, $user, $pass, $port = null, $options = array() ) {
+	public function connect( $host, $dbname, $user, $pass, $port = null, $options = array() ) {
 		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
 
 		$this->dbh = mysqli_init();
@@ -141,7 +141,15 @@ class wpdb_driver_mysqli extends wpdb_driver {
 			);
 		}
 
-		return ( ! mysqli_connect_error() );
+		if ( mysqli_connect_error() ) {
+			return false;
+		}
+
+		$this->set_charset();
+		$this->set_sql_mode();
+		$this->select( $dbname );
+
+		return true;
 	}
 
 	/**
@@ -166,15 +174,11 @@ class wpdb_driver_mysqli extends wpdb_driver {
 
 	/**
 	 * Sets the connection's character set.
-	 *
-	 * @param resource $dbh     The resource given by the driver
-	 * @param string   $charset Optional. The character set. Default null.
-	 * @param string   $collate Optional. The collation. Default null.
 	 */
-	public function set_charset( $charset = null, $collate = null ) {
-		if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
+	public function set_charset() {
+		if ( $this->has_cap( 'collation' ) && ! empty( WP_DB_Driver_Config::$charset ) ) {
 			if ( function_exists( 'mysqli_set_charset' ) && $this->has_cap( 'set_charset' ) ) {
-				mysqli_set_charset( $this->dbh, $charset );
+				mysqli_set_charset( $this->dbh, WP_DB_Driver_Config::$charset );
 
 				return true;
 			}

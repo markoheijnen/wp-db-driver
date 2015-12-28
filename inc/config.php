@@ -1,6 +1,9 @@
 <?php
 
 class WP_DB_Driver_Config {
+	static $charset = false;
+	static $collate = false;
+
 
 	public static function get_drivers() {
 		global $wp_custom_drivers;

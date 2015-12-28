@@ -3,6 +3,7 @@
 require( dirname( __FILE__ ) . '/config.php' );
 require( dirname( __FILE__ ) . '/error-handler.php' );
 require( dirname( __FILE__ ) . '/interface-wp-db-driver.php' );
+require( dirname( __FILE__ ) . '/mysql-shared.php' );
 
 class wpdb_drivers extends wpdb {
 
@@ -704,118 +705,39 @@ class wpdb_drivers extends wpdb {
 	}
 
 	/**
-	 * Set $this->charset and $this->collate
+	 * Set WP_DB_Driver_Config::$charset and WP_DB_Driver_Config::$collate
 	 *
 	 * @since 3.1.0
 	 */
 	public function init_charset() {
 		if ( function_exists('is_multisite') && is_multisite() ) {
-			$this->charset = 'utf8';
+			WP_DB_Driver_Config::$charset = 'utf8';
+
 			if ( defined( 'DB_COLLATE' ) && DB_COLLATE ) {
-				$this->collate = DB_COLLATE;
+				WP_DB_Driver_Config::$collate = DB_COLLATE;
 			}
 			else {
-				$this->collate = 'utf8_general_ci';
+				WP_DB_Driver_Config::$collate = 'utf8_general_ci';
 			}
 		} elseif ( defined( 'DB_COLLATE' ) ) {
-			$this->collate = DB_COLLATE;
+			WP_DB_Driver_Config::$collate = DB_COLLATE;
 		}
 
 		if ( defined( 'DB_CHARSET' ) ) {
-			$this->charset = DB_CHARSET;
+			WP_DB_Driver_Config::$charset = DB_CHARSET;
 		}
 
 		if ( ! $this->dbh || ! $this->dbh->is_connected() ) {
 			return;
 		}
 
-		if ( 'utf8' === $this->charset && $this->has_cap( 'utf8mb4' ) ) {
-			$this->charset = 'utf8mb4';
+		if ( 'utf8' === WP_DB_Driver_Config::$charset && $this->has_cap( 'utf8mb4' ) ) {
+			WP_DB_Driver_Config::$charset = 'utf8mb4';
 		}
 
-		if ( 'utf8mb4' === $this->charset && ( ! $this->collate || stripos( $this->collate, 'utf8_' ) === 0 ) ) {
-			$this->collate = 'utf8mb4_unicode_ci';
+		if ( 'utf8mb4' === WP_DB_Driver_Config::$charset && ( ! WP_DB_Driver_Config::$collate || stripos( WP_DB_Driver_Config::$collate, 'utf8_' ) === 0 ) ) {
+			WP_DB_Driver_Config::$collate = 'utf8mb4_unicode_ci';
 		}
-	}
-
-	/**
-	 * Sets the connection's character set.
-	 *
-	 * @since 3.1.0
-	 *
-	 * @param resource $dbh     The resource given by the driver
-	 * @param string   $charset Optional. The character set. Default null.
-	 * @param string   $collate Optional. The collation. Default null.
-	 */
-	public function set_charset( $dbh, $charset = null, $collate = null ) {
-		if ( ! isset( $charset ) ) {
-			$charset = $this->charset;
-		}
-
-		if ( ! isset( $collate ) ) {
-			$collate = $this->collate;
-		}
-
-		if ( ! $dbh->set_charset( $charset, $collate ) ) {
-			if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
-				$query = $this->prepare( 'SET NAMES %s', $charset );
-
-				if ( ! empty( $collate ) ) {
-					$query .= $this->prepare( ' COLLATE %s', $collate );
-				}
-
-				$this->query( $query );
-			}
-		}
-	}
-
-	/**
-	 * Change the current SQL mode, and ensure its WordPress compatibility.
-	 *
-	 * If no modes are passed, it will ensure the current MySQL server
-	 * modes are compatible.
-	 *
-	 * @since 3.9.0
-	 *
-	 * @param array $modes Optional. A list of SQL modes to set.
-	 */
-	public function set_sql_mode( $modes = array() ) {
-		if ( empty( $modes ) ) {
-			$res = $this->dbh->query( 'SELECT @@SESSION.sql_mode;' );
-
-			if ( ! $res ) {
-				return;
-			}
-
-			$modes_str = $this->dbh->query_result( 0 );
-
-			if ( empty( $modes_str ) ) {
-				return;
-			}
-
-			$modes = explode( ',', $modes_str );
-		}
-
-		$modes = array_change_key_case( $modes, CASE_UPPER );
-
-		/**
-		 * Filter the list of incompatible SQL modes to exclude.
-		 *
-		 * @since 3.9.0
-		 *
-		 * @param array $incompatible_modes An array of incompatible modes.
-		 */
-		$incompatible_modes = (array) apply_filters( 'incompatible_sql_modes', $this->incompatible_modes );
-
-		foreach ( $modes as $i => $mode ) {
-			if ( in_array( $mode, $incompatible_modes ) ) {
-				unset( $modes[ $i ] );
-			}
-		}
-
-		$modes_str = implode( ',', $modes );
-
-		$this->dbh->query( "SET SESSION sql_mode='$modes_str';" );
 	}
 
 	/**
@@ -997,67 +919,6 @@ class wpdb_drivers extends wpdb {
 		}
 
 		return $tables;
-	}
-
-	/**
-	 * Selects a database using the current database connection.
-	 *
-	 * The database name will be changed based on the current database
-	 * connection. On failure, the execution will bail and display an DB error.
-	 *
-	 * @since 0.71
-	 *
-	 * @param string        $db  Database driver
-	 * @param resource|null $dbh Optional link identifier.
-	 */
-	public function select( $db, $dbh = null ) {
-		if ( is_null( $dbh ) ) {
-			$dbh = $this->dbh;
-		}
-
-		$success = $dbh->select( $db );
-
-		if ( ! $success ) {
-			$this->ready = false;
-
-			if ( ! did_action( 'template_redirect' ) ) {
-				wp_load_translations_early();
-
-				$message = '<h1>' . __( 'Can&#8217;t select database' ) . "</h1>\n";
-
-				$message .= '<p>' . sprintf(
-					/* translators: %s: database name */
-					__( 'We were able to connect to the database server (which means your username and password is okay) but not able to select the %s database.' ),
-					'<code>' . htmlspecialchars( $db, ENT_QUOTES ) . '</code>'
-				) . "</p>\n";
-
-				$message .= "<ul>\n";
-				$message .= '<li>' . __( 'Are you sure it exists?' ) . "</li>\n";
-
-				$message .= '<li>' . sprintf(
-					/* translators: 1: database user, 2: database name */
-					__( 'Does the user %1$s have permission to use the %2$s database?' ),
-					'<code>' . htmlspecialchars( $this->dbuser, ENT_QUOTES )  . '</code>',
-					'<code>' . htmlspecialchars( $db, ENT_QUOTES ) . '</code>'
-				) . "</li>\n";
-
-				$message .= '<li>' . sprintf(
-					/* translators: %s: database name */
-					__( 'On some systems the name of your database is prefixed with your username, so it would be like <code>username_%1$s</code>. Could that be the problem?' ),
-					htmlspecialchars( $db, ENT_QUOTES )
-				). "</li>\n";
-
-				$message .= "</ul>\n";
-
-				$message .= '<p>' . sprintf(
-					/* translators: %s: support forums URL */
-					__( 'If you don&#8217;t know how to set up a database you should <strong>contact your host</strong>. If all else fails you may find help at the <a href="%s">WordPress Support Forums</a>.' ),
-					__( 'https://wordpress.org/support/' )
-				) . "</p>\n";
-
-				$this->bail( $message, 'db_select_fail' );
-			}
-		}
 	}
 
 	/**
@@ -1420,14 +1281,14 @@ class wpdb_drivers extends wpdb {
 			$port = null;
 		}
 
-		$options = array();
-		$options['key'] = defined( 'DB_SSL_KEY' ) ? DB_SSL_KEY : null;
-		$options['cert'] = defined( 'DB_SSL_CERT' ) ? DB_SSL_CERT : null;
-		$options['ca'] = defined( 'DB_SSL_CA' ) ? DB_SSL_CA : null;
+		$options            = array();
+		$options['key']     = defined( 'DB_SSL_KEY' ) ? DB_SSL_KEY : null;
+		$options['cert']    = defined( 'DB_SSL_CERT' ) ? DB_SSL_CERT : null;
+		$options['ca']      = defined( 'DB_SSL_CA' ) ? DB_SSL_CA : null;
 		$options['ca_path'] = defined( 'DB_SSL_CA_PATH' ) ? DB_SSL_CA_PATH : null;
-		$options['cipher'] = defined( 'DB_SSL_CIPHER' ) ? DB_SSL_CIPHER : null;
+		$options['cipher']  = defined( 'DB_SSL_CIPHER' ) ? DB_SSL_CIPHER : null;
 
-		$is_connected = $this->dbh->connect( $host, $this->dbuser, $this->dbpassword, $port, $options );
+		$is_connected = $this->dbh->connect( $host, $this->dbname, $this->dbuser, $this->dbpassword, $port, $options );
 
 		if ( ! $is_connected && $allow_bail ) {
 			wp_load_translations_early();
@@ -1466,10 +1327,6 @@ class wpdb_drivers extends wpdb {
 		elseif ( $is_connected ) {
 			$this->has_connected = true;
 			$this->ready = true;
-
-			$this->set_charset( $this->dbh );
-			$this->set_sql_mode();
-			$this->select( $this->dbname, $this->dbh );
 
 			return true;
 		}
@@ -2715,8 +2572,8 @@ class wpdb_drivers extends wpdb {
 						$charset = $value['charset'];
 					}
 
-					if ( $this->charset ) {
-						$connection_charset = $this->charset;
+					if ( WP_DB_Driver_Config::$charset ) {
+						$connection_charset = WP_DB_Driver_Config::$charset;
 					}
 					else {
 						$connection_charset = $this->dbh->connection_charset();
@@ -2787,7 +2644,7 @@ class wpdb_drivers extends wpdb {
 				return $query;
 			}
 		} else {
-			$charset = $this->charset;
+			$charset = WP_DB_Driver_Config::$charset;
 		}
 
 		$data = array(
@@ -3039,10 +2896,13 @@ class wpdb_drivers extends wpdb {
 	public function get_charset_collate() {
 		$charset_collate = '';
 
-		if ( ! empty( $this->charset ) )
-			$charset_collate = "DEFAULT CHARACTER SET $this->charset";
-		if ( ! empty( $this->collate ) )
-			$charset_collate .= " COLLATE $this->collate";
+		if ( ! empty( WP_DB_Driver_Config::$charset ) ) {
+			$charset_collate = "DEFAULT CHARACTER SET " .  WP_DB_Driver_Config::$charset;
+		}
+
+		if ( ! empty( WP_DB_Driver_Config::$collate ) ) {
+			$charset_collate .= " COLLATE " . WP_DB_Driver_Config::$collate;
+		}
 
 		return $charset_collate;
 	}
