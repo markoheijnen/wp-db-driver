@@ -5,7 +5,7 @@ require( dirname( __FILE__ ) . '/error-handler.php' );
 require( dirname( __FILE__ ) . '/interface-wp-db-driver.php' );
 require( dirname( __FILE__ ) . '/mysql-shared.php' );
 
-class wpdb_drivers extends wpdb {
+class wpdb_drivers {
 
 	/**
 	 * Whether to show SQL/DB errors
@@ -646,15 +646,18 @@ class wpdb_drivers extends wpdb {
 			'col_meta',
 			'table_charset',
 			'check_current_query',
-			'charset',
-			'collate',
 		);
 
 		if ( in_array( $name, $protected_members, true ) ) {
 			return;
 		}
 
-		$this->$name = $value;
+		if ( 'collate' == $name || 'charset' == $name ) {
+			return WP_DB_Driver_Config::$$name = $value;
+		}
+		else {
+			$this->$name = $value;
+		}
 	}
 
 	/**
