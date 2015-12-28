@@ -14,7 +14,7 @@ class WP_DB_Driver_Config {
 			'wpdb_driver_pdo_mysql' => $driver_folder . '/pdo_mysql.php',
 			'wpdb_driver_mysqli'    => $driver_folder . '/mysqli.php',
 			'wpdb_driver_mysql'     => $driver_folder . '/mysql.php',
-			'wpdb_driver_pdo_pgsql' => $driver_folder . '/pdo_mysql.php', // Uncommon to use so as last
+			'wpdb_driver_pdo_pgsql' => $driver_folder . '/pdo_pgsql.php', // Uncommon to use so as last
 		);
 
 		if ( isset( $wp_custom_drivers ) && is_array( $wp_custom_drivers ) ) {
