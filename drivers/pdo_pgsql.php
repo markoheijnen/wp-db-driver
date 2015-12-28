@@ -111,7 +111,7 @@ class wpdb_driver_pdo_pgsql extends wpdb_driver {
 			$dsn = sprintf( 'pgsql:dbname=%1$s;host=%2$s;port=%3$d', $dbname, $host, $port );
 		}
 		else {
-			$dsn = sprintf( 'pgsql:dbname=%1$s;host=%1$s;', $dbname, $host );
+			$dsn = sprintf( 'pgsql:dbname=%1$s;host=%2$s;', $dbname, $host );
 		}
 
 		try {
