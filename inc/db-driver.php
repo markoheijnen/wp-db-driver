@@ -450,24 +450,6 @@ class wpdb_drivers extends wpdb {
 	public $field_types = array();
 
 	/**
-	 * Database table columns charset
-	 *
-	 * @since 2.2.0
-	 * @access public
-	 * @var string
-	 */
-	public $charset;
-
-	/**
-	 * Database table columns collate
-	 *
-	 * @since 2.2.0
-	 * @access public
-	 * @var string
-	 */
-	public $collate;
-
-	/**
 	 * Database Username
 	 *
 	 * @since 2.9.0
@@ -555,7 +537,6 @@ class wpdb_drivers extends wpdb {
 		$driver = WP_DB_Driver_Config::get_current_driver();
 
 		if ( ! $driver ) {
-
 			wp_load_translations_early();
 
 			// Load custom DB error template, if present.
@@ -641,6 +622,10 @@ class wpdb_drivers extends wpdb {
 			$this->load_col_info();
 		}
 
+		if ( 'collate' == $name || 'charset' == $name ) {
+			return WP_DB_Driver_Config::$$name;
+		}
+
 		if ( isset( $this->$name ) ) {
 			return $this->$name;
 		}
@@ -661,6 +646,8 @@ class wpdb_drivers extends wpdb {
 			'col_meta',
 			'table_charset',
 			'check_current_query',
+			'charset',
+			'collate',
 		);
 
 		if ( in_array( $name, $protected_members, true ) ) {
@@ -680,6 +667,10 @@ class wpdb_drivers extends wpdb {
 	 * @return bool If the member is set or not
 	 */
 	public function __isset( $name ) {
+		if ( 'collate' == $name || 'charset' == $name ) {
+			return true;
+		}
+
 		return isset( $this->$name );
 	}
 
@@ -727,6 +718,22 @@ class wpdb_drivers extends wpdb {
 
 		if ( 'utf8mb4' === WP_DB_Driver_Config::$charset && ( ! WP_DB_Driver_Config::$collate || stripos( WP_DB_Driver_Config::$collate, 'utf8_' ) === 0 ) ) {
 			WP_DB_Driver_Config::$collate = 'utf8mb4_unicode_ci';
+		}
+	}
+
+	/**
+	 * Change the current SQL mode, and ensure its WordPress compatibility.
+	 *
+	 * If no modes are passed, it will ensure the current MySQL server
+	 * modes are compatible.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param array $modes Optional. A list of SQL modes to set.
+	 */
+	public function set_sql_mode( $modes = array() ) {
+		if ( method_exists( $this->dbh, 'set_sql_mode' ) ) {
+			$this->dbh->set_sql_mode( $modes );
 		}
 	}
 
@@ -2938,6 +2945,12 @@ class wpdb_drivers extends wpdb {
 	public function db_version() {
 		return $this->dbh->db_version();
 	}
+
+
+	/*
+	 * Deprecated methods
+	 */
+	public function select( $db, $dbh = NULL ) {}
 
 }
 
