@@ -147,9 +147,8 @@ class wpdb_driver_mysqli extends wpdb_driver_mysql_shared {
 
 		$this->set_charset();
 		$this->set_sql_mode();
-		$this->select( $dbname );
 
-		return true;
+		return $this->select( $dbname );
 	}
 
 	/**
