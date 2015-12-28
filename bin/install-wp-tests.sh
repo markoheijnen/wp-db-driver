@@ -20,6 +20,10 @@ WP_CORE_DIR=/tmp/wordpress/
 
 set -ex
 
+if [[ $WPDB_DRIVER == 'pdo_pgsql' ]]; then
+	DB_USER="postgres"
+fi
+
 install_wp() {
 	rm -Rf $WP_CORE_DIR
 	mkdir -p $WP_CORE_DIR
