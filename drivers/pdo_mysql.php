@@ -102,12 +102,15 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	 * Connect to database
 	 * @return bool
 	 */
-	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
+	public function connect( $host, $user, $pass, $port = null, $options = array() ) {
 		if( '.sock' === substr( $port, -5 ) ) {
 			$dsn = sprintf( 'mysql:host=%1$s;unix_socket=%2$s', $host, $port );
 		}
-		else {
+		else if ( $port ) {
 			$dsn = sprintf( 'mysql:host=%1$s;port=%2$d', $host, $port );
+		}
+		else {
+			$dsn = sprintf( 'mysql:host=%1$s;', $host );
 		}
 
 		try {

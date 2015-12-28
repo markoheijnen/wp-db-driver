@@ -1417,7 +1417,7 @@ class wpdb_drivers extends wpdb {
  		}
  		else {
 			$host = $this->dbhost;
-			$port = 3306;
+			$port = null;
 		}
 
 		$options = array();

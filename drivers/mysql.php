@@ -90,14 +90,19 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 * Connect to database
 	 * @return bool
 	 */
-	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
+	public function connect( $host, $user, $pass, $port = null, $options = array() ) {
+		$server       = $host;
 		$new_link     = defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true;
 		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
 
+		if ( $port ) {
+			$server .= ':' . $port;
+		}
+
 		if ( WP_DEBUG ) {
-			$this->dbh =  mysql_connect( "$host:$port", $user, $pass, $new_link, $client_flags );
+			$this->dbh =  mysql_connect( $server, $user, $pass, $new_link, $client_flags );
 		} else {
-			$this->dbh = @mysql_connect( "$host:$port", $user, $pass, $new_link, $client_flags );
+			$this->dbh = @mysql_connect( $server, $user, $pass, $new_link, $client_flags );
 		}
 
 		return ( false !== $this->dbh );

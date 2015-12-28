@@ -100,7 +100,7 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	 * Connect to database
 	 * @return bool
 	 */
-	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
+	public function connect( $host, $user, $pass, $port = null, $options = array() ) {
 		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
 
 		$this->dbh = mysqli_init();
