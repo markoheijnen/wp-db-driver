@@ -1503,9 +1503,9 @@ class wpdb_drivers extends wpdb {
 	/**
 	 * Disconnect the database connection
 	 */
-	public function disconnect() {
+	public function close() {
 		if ( $this->dbh ) {
-			$this->dbh->disconnect();
+			$this->dbh->close();
 		}
 	}
 

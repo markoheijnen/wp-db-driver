@@ -147,7 +147,7 @@ class wpdb_driver_mysqli extends wpdb_driver {
 	/**
 	 * Disconnect the database connection
 	 */
-	public function disconnect() {
+	public function close() {
 		$this->dbh->close();
 		$this->dbh = null;
 	}

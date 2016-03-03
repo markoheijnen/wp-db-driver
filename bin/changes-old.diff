@@ -12,7 +12,7 @@ Index: tests/phpunit/tests/db.php
 -			mysql_close( $wpdb->dbh );
 -		}
 -		unset( $wpdb->dbh );
-+		$wpdb->disconnect();
++		$wpdb->close();
  
  		$var = $wpdb->get_var( "SELECT ID FROM $wpdb->users LIMIT 1" );
  		$this->assertGreaterThan( 0, $var );
