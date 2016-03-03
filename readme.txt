@@ -3,7 +3,7 @@ Contributors: markoheijnen, kurtpayne
 Donate link: https://markoheijnen.com/donate
 Tags: database, backend, pdo, mysqli, mysql
 Requires at least: 4.2.0
-Tested up to: 4.4.0
+Tested up to: 4.5.0
 Stable tag: 2.1.0
 License: GPLv2 or later
 

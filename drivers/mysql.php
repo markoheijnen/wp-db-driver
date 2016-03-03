@@ -93,12 +93,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 	public function connect( $host, $user, $pass, $port = 3306, $options = array() ) {
 		$new_link     = defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true;
 		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
-
-		if ( WP_DEBUG ) {
-			$this->dbh =  mysql_connect( "$host:$port", $user, $pass, $new_link, $client_flags );
-		} else {
-			$this->dbh = @mysql_connect( "$host:$port", $user, $pass, $new_link, $client_flags );
-		}
+		$this->dbh    =  mysql_connect( "$host:$port", $user, $pass, $new_link, $client_flags );
 
 		return ( false !== $this->dbh );
 	}
@@ -125,7 +120,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 * @return bool
 	 */
 	public function ping() {
-		return @ mysql_ping( $this->dbh );
+		return mysql_ping( $this->dbh );
 	}
 
 	/**
@@ -161,11 +156,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 * @return void
 	 */
 	public function select( $db ) {
-		if ( WP_DEBUG ) {
-			return mysql_select_db( $db, $this->dbh );
-		} else {
-			return @mysql_select_db( $db, $this->dbh );
-		}
+		return mysql_select_db( $db, $this->dbh );
 	}
 
 	/**
@@ -175,7 +166,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 */
 	public function query( $query ) {
 		$return_val   = 0;
-		$this->result = @mysql_query( $query, $this->dbh );
+		$this->result = mysql_query( $query, $this->dbh );
 
 		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {
 			$return_val = $this->result;
@@ -222,7 +213,7 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 */
 	public function get_results() {
 		$ret = array();
-		while ( $row = @mysql_fetch_object( $this->result ) ) {
+		while ( $row = mysql_fetch_object( $this->result ) ) {
 			$ret[] = $row;
 		}
 		return $ret;
@@ -237,10 +228,10 @@ class wpdb_driver_mysql extends wpdb_driver {
 			return $this->col_info;
 		}
 
-		$num_fields = @mysql_num_fields( $this->result );
+		$num_fields = mysql_num_fields( $this->result );
 
 		for ( $i = 0; $i < $num_fields; $i++ ) {
-			$this->col_info[ $i ] = @mysql_fetch_field( $this->result, $i );
+			$this->col_info[ $i ] = mysql_fetch_field( $this->result, $i );
 		}
 
 		return $this->col_info;

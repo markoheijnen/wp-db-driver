@@ -125,11 +125,7 @@ class wpdb_driver_mysqli extends wpdb_driver {
 			}
 		}
 
-		if ( WP_DEBUG ) {
-			$this->dbh->real_connect( $host, $user, $pass, null, $port, $socket, $client_flags );
-		} else {
-			@$this->dbh->real_connect( $host, $user, $pass, null, $port, $socket, $client_flags );
-		}
+		$this->dbh->real_connect( $host, $user, $pass, null, $port, $socket, $client_flags );
 
 		if ( ! empty( $options['key'] ) && ! empty( $options['cert'] ) && ! empty( $options['ca'] ) ) {
 			$this->dbh->ssl_set(
@@ -170,7 +166,7 @@ class wpdb_driver_mysqli extends wpdb_driver {
 			return false;
 		}
 
-		return @ $this->dbh->ping();
+		return $this->dbh->ping();
 	}
 
 	/**
