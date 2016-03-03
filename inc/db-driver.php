@@ -3104,7 +3104,7 @@ class wpdb_drivers extends wpdb {
 	}
 
 	/**
-	 * The database version number.
+	 * Retrieves the MySQL server version.
 	 *
 	 * @since 2.7.0
 	 *

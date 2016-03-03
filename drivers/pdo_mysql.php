@@ -309,7 +309,7 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	}
 
 	/**
-	 * The database version number.
+	 * Retrieves the MySQL server version.
 	 * @return false|string false on failure, version number on success
 	 */
 	public function db_version() {
