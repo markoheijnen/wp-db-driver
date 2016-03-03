@@ -107,8 +107,13 @@ class wpdb_driver_mysql extends wpdb_driver {
 	 * Disconnect the database connection
 	 */
 	public function close() {
-		mysql_close( $this->dbh );
-		$this->dbh = null;
+		$closed = mysql_close( $this->dbh );
+
+		if ( $closed ) {
+			$this->dbh = null;
+		}
+
+		return $closed;
 	}
 
 	/**

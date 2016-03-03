@@ -1505,9 +1505,10 @@ class wpdb_drivers extends wpdb {
 	 */
 	public function close() {
 		if ( $this->dbh ) {
-			$this->dbh->close();
-			$this->dbh = null;
+			return $this->dbh->close();
 		}
+
+		return false;
 	}
 
 	/**

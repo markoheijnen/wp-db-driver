@@ -139,6 +139,8 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	 */
 	public function close() {
 		$this->dbh = null;
+
+		return true;
 	}
 
 	/**
