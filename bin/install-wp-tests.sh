@@ -49,7 +49,11 @@ install_test_suite() {
 
 	echo "define( 'WPDB_DRIVER', '$WPDB_DRIVER'); " >> wp-tests-config.php
 
-	patch -p0 < "$DIR/bin/changes.diff" &> /dev/null
+	if [ $WP_VERSION == 'master' ]; then
+		patch -p0 < "$DIR/bin/changes.diff"
+	else
+		patch -p0 < "$DIR/bin/changes-old.diff"
+	fi
 }
 
 install_db() {

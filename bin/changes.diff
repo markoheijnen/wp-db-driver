@@ -1,21 +1,3 @@
-Index: tests/phpunit/tests/db.php
-===================================================================
---- tests/phpunit/tests/db.php	(revision 33328)
-+++ tests/phpunit/tests/db.php	(working copy)
-@@ -60,12 +60,7 @@
- 		$var = $wpdb->get_var( "SELECT ID FROM $wpdb->users LIMIT 1" );
- 		$this->assertGreaterThan( 0, $var );
- 
--		if ( $wpdb->use_mysqli ) {
--			mysqli_close( $wpdb->dbh );
--		} else {
--			mysql_close( $wpdb->dbh );
--		}
--		unset( $wpdb->dbh );
-+		$wpdb->disconnect();
- 
- 		$var = $wpdb->get_var( "SELECT ID FROM $wpdb->users LIMIT 1" );
- 		$this->assertGreaterThan( 0, $var );
 Index: tests/phpunit/includes/utils.php
 ===================================================================
 --- tests/phpunit/includes/utils.php	(revision 33328)
