@@ -138,6 +138,10 @@ class wpdb_driver_pdo_mysql extends wpdb_driver {
 	 * Disconnect the database connection
 	 */
 	public function close() {
+		if ( ! $this->dbh ) {
+			return false;
+		}
+
 		$this->dbh = null;
 
 		return true;
