@@ -1501,7 +1501,13 @@ class wpdb_drivers extends wpdb {
 	}
 
 	/**
-	 * Disconnect the database connection
+	 * Closes the current database connection.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * 
+	 * @return bool True if the connection was successfully closed, false if it wasn't,
+	 *              or the connection doesn't exist.
 	 */
 	public function close() {
 		if ( $this->dbh ) {
