@@ -5,6 +5,7 @@ sudo: false
 php:
     - 5.2
     - 5.6
+    - 7.0
 
 env:
     - WP_VERSION=master WP_MULTISITE=0 WPDB_DRIVER=mysql
